@@ -1,0 +1,122 @@
+:root {
+  --bulma-family-primary: Rubik, Inter, SF Pro, Segoe UI, Roboto, Oxygen, Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+.icon {
+  svg {
+    height: 1em;
+    width: 1em;
+  }
+}
+
+// Animations
+@keyframes motion {
+  from {
+    background-position: top;
+  }
+
+  to {
+    background-position: bottom;
+  }
+}
+
+@keyframes distort1 {
+  0% {
+    transform: translate(0%, 0px);
+  }
+
+  98.4% {
+    transform: translate(0%, 0px);
+  }
+
+  98.6% {
+    transform: translate(-5px, 0px);
+  }
+
+  98.8% {
+    transform: translate(-5px, 5px);
+  }
+
+  99% {
+    transform: translate(0%, 5px);
+  }
+
+  99.2% {
+    transform: translate(5px, 5px);
+  }
+
+  99.4% {
+    transform: translate(5px, -5px);
+  }
+
+  99.6% {
+    transform: translate(-5px, 0px);
+  }
+
+  99.8% {
+    transform: translate(0%, 0px);
+  }
+
+  100% {
+    transform: translate(0%, 0px);
+  }
+}
+
+@keyframes distort2 {
+  0% {
+    transform: translate(0%, 0px);
+  }
+
+  98.4% {
+    transform: translate(0%, 0px);
+  }
+
+  98.6% {
+    transform: translate(5px, 0px);
+  }
+
+  98.8% {
+    transform: translate(5px, -5px);
+  }
+
+  99% {
+    transform: translate(0%, -5px);
+  }
+
+  99.2% {
+    transform: translate(-5px, -5px);
+  }
+
+  99.4% {
+    transform: translate(-5px, -5px);
+  }
+
+  99.6% {
+    transform: translate(5px, 0px);
+  }
+
+  99.8% {
+    transform: translate(0%, 0px);
+  }
+
+  100% {
+    transform: translate(0%, 0px);
+  }
+}
+
+
+body {
+  &:before {
+    display: block;
+    content: "";
+    position: absolute;
+    background: radial-gradient(circle, rgba(14, 0, 255, 40.0) 0%, rgba(14, 0, 255, 0.2%) 50%, rgba(14, 0, 255, 0) 100%);
+    left: -150%;
+    right: -50%;
+    top: -150%;
+    opacity: 0.1;
+    bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+}
