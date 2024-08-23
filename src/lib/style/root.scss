@@ -1,122 +1,392 @@
+@use "bulma/sass/utilities/mixins";
+
 :root {
-  --bulma-family-primary: Rubik, Inter, SF Pro, Segoe UI, Roboto, Oxygen, Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
+    --bulma-family-primary: Rubik, Inter, SF Pro, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+    --color-yellow: #fde72d;
+    --color-blue: #77d2ff;
 }
 
 .icon {
-  svg {
-    height: 1em;
-    width: 1em;
-  }
+    svg {
+        height: 1em;
+        width: 1em;
+    }
+}
+
+p {
+    &.content {
+        font-family:
+            Crimson Text,
+            Inter,
+            SF Pro,
+            Segoe UI,
+            Roboto,
+            Oxygen,
+            Ubuntu,
+            Helvetica Neue,
+            Helvetica,
+            Arial,
+            sans-serif;
+        line-height: 1.4;
+    }
+
+    a {
+        &:not(.button) {
+            color: hsl(var(--bulma-link-h), var(--bulma-link-s), 50%);
+            background: var(--color-blue);
+            background: linear-gradient(
+                45deg,
+                var(--color-blue) 0%,
+                var(--color-yellow) 100%
+            );
+            background-clip: text;
+            background-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            display: inline-block;
+            position: relative;
+
+            &::before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background: linear-gradient(
+                    45deg,
+                    var(--color-blue) 0%,
+                    var(--color-yellow) 100%
+                );
+                visibility: hidden;
+                transform: scaleX(0);
+                transition: all 0.2s ease-in-out;
+            }
+
+            &:hover {
+                background: linear-gradient(
+                    230deg,
+                    var(--color-blue) 0%,
+                    var(--color-yellow) 100%
+                );
+
+                background-clip: text;
+                background-fill-color: transparent;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.5);
+
+                &::before {
+                    visibility: visible;
+                    transform: scaleX(1);
+                    background: linear-gradient(
+                        90deg,
+                        var(--color-blue) 0%,
+                        var(--color-yellow) 100%
+                    );
+                }
+            }
+        }
+    }
+}
+
+@mixin big-nav {
+    width: calc(var(--bulma-size-1) * 6);
+
+    .column {
+        padding-left: var(--bulma-size-5);
+        padding-right: var(--bulma-size-5);
+    }
+
+    nav {
+        .extra-info {
+            opacity: 1;
+            max-width: 100%;
+            /* max-height: 1.5em; */
+            transition-delay: 0.3s;
+        }
+
+        .logo-wrapper {
+            margin-left: 0;
+        }
+
+        a.menu-item {
+            justify-content: space-between !important;
+
+            /* margin-bottom: 0px; */
+
+            .icon-text {
+                max-width: 100%;
+                flex-direction: row;
+            }
+        }
+    }
+}
+
+.nav-button {
+    display: none;
+    z-index: 100;
+
+    @include mixins.mobile {
+        display: block;
+    }
+}
+
+.main-layout {
+    width: 100%;
+
+    .nav-container {
+        height: calc(100vh + var(--bulma-column-gap));
+        width: calc(var(--bulma-size-1) * 1.6);
+        position: fixed;
+        left: 0;
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+
+        .column {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        nav {
+            height: 100vh;
+            background-color: hsla(0, 0%, 0%, 0.2);
+
+            .close-button {
+                display: none;
+                position: absolute;
+                right: 1em;
+                top: 1em;
+
+                @include mixins.mobile {
+                    display: block;
+                }
+            }
+
+            .logo-wrapper {
+                max-width: calc(var(--bulma-size-2) * 1.4);
+                margin-left: calc(var(--bulma-size-7) / 2);
+                transition: all 0.2s ease-in-out;
+            }
+
+            .extra-info {
+                opacity: 0;
+                max-width: 0%;
+                /* max-height: 0px; */
+                transition: all 0.2s ease-in-out;
+                text-wrap: nowrap;
+                overflow: hidden;
+                transition-delay: 0s;
+            }
+
+            a.menu-item {
+                background-color: transparent;
+                text-wrap: nowrap;
+                transition: all 0.2s ease-in-out;
+
+                margin-bottom: var(--bulma-size-6);
+                justify-content: center !important;
+
+                .icon-text {
+                    /* flex-direction: column; */
+                    max-width: 1em;
+                    flex-wrap: nowrap;
+                }
+
+                &:hover {
+                    background-color: hsl(
+                        var(--bulma-menu-item-h),
+                        var(--bulma-menu-item-s),
+                        calc(
+                            var(--bulma-menu-item-background-l) +
+                                var(--bulma-menu-item-background-l-delta)
+                        )
+                    );
+                }
+            }
+        }
+
+        &.expanded {
+            @include big-nav;
+        }
+
+        @include mixins.mobile {
+            visibility: hidden;
+            width: 0%;
+            padding: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background-color: hsla(0, 0%, 0%, 0.9);
+            z-index: 1;
+
+            &.expanded {
+                visibility: visible;
+                width: 100% !important;
+            }
+        }
+    }
+
+    .content-container {
+        margin-left: calc(var(--bulma-size-1) * 6);
+        padding: 0 var(--bulma-size-2);
+        transition: all 0.3s ease-in-out;
+        max-width: 100%;
+
+        &.expanded {
+            margin-left: calc(var(--bulma-size-1) * 1.6);
+        }
+
+        @include mixins.mobile {
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+            width: calc(100% + var(--bulma-size-5));
+            max-width: calc(100% + var(--bulma-size-5));
+        }
+    }
+}
+
+.attributions {
+    padding-bottom: var(--bulma-size-3);
+
+    a {
+        svg {
+            height: 1em;
+        }
+    }
 }
 
 // Animations
 @keyframes motion {
-  from {
-    background-position: top;
-  }
+    from {
+        background-position: top;
+    }
 
-  to {
-    background-position: bottom;
-  }
+    to {
+        background-position: bottom;
+    }
 }
 
 @keyframes distort1 {
-  0% {
-    transform: translate(0%, 0px);
-  }
+    0% {
+        transform: translate(0%, 0px);
+    }
 
-  98.4% {
-    transform: translate(0%, 0px);
-  }
+    98.4% {
+        transform: translate(0%, 0px);
+    }
 
-  98.6% {
-    transform: translate(-5px, 0px);
-  }
+    98.6% {
+        transform: translate(-5px, 0px);
+    }
 
-  98.8% {
-    transform: translate(-5px, 5px);
-  }
+    98.8% {
+        transform: translate(-5px, 5px);
+    }
 
-  99% {
-    transform: translate(0%, 5px);
-  }
+    99% {
+        transform: translate(0%, 5px);
+    }
 
-  99.2% {
-    transform: translate(5px, 5px);
-  }
+    99.2% {
+        transform: translate(5px, 5px);
+    }
 
-  99.4% {
-    transform: translate(5px, -5px);
-  }
+    99.4% {
+        transform: translate(5px, -5px);
+    }
 
-  99.6% {
-    transform: translate(-5px, 0px);
-  }
+    99.6% {
+        transform: translate(-5px, 0px);
+    }
 
-  99.8% {
-    transform: translate(0%, 0px);
-  }
+    99.8% {
+        transform: translate(0%, 0px);
+    }
 
-  100% {
-    transform: translate(0%, 0px);
-  }
+    100% {
+        transform: translate(0%, 0px);
+    }
 }
 
 @keyframes distort2 {
-  0% {
-    transform: translate(0%, 0px);
-  }
+    0% {
+        transform: translate(0%, 0px);
+    }
 
-  98.4% {
-    transform: translate(0%, 0px);
-  }
+    98.4% {
+        transform: translate(0%, 0px);
+    }
 
-  98.6% {
-    transform: translate(5px, 0px);
-  }
+    98.6% {
+        transform: translate(5px, 0px);
+    }
 
-  98.8% {
-    transform: translate(5px, -5px);
-  }
+    98.8% {
+        transform: translate(5px, -5px);
+    }
 
-  99% {
-    transform: translate(0%, -5px);
-  }
+    99% {
+        transform: translate(0%, -5px);
+    }
 
-  99.2% {
-    transform: translate(-5px, -5px);
-  }
+    99.2% {
+        transform: translate(-5px, -5px);
+    }
 
-  99.4% {
-    transform: translate(-5px, -5px);
-  }
+    99.4% {
+        transform: translate(-5px, -5px);
+    }
 
-  99.6% {
-    transform: translate(5px, 0px);
-  }
+    99.6% {
+        transform: translate(5px, 0px);
+    }
 
-  99.8% {
-    transform: translate(0%, 0px);
-  }
+    99.8% {
+        transform: translate(0%, 0px);
+    }
 
-  100% {
-    transform: translate(0%, 0px);
-  }
+    100% {
+        transform: translate(0%, 0px);
+    }
 }
 
-
 body {
-  &:before {
-    display: block;
-    content: "";
-    position: absolute;
-    background: radial-gradient(circle, rgba(14, 0, 255, 40.0) 0%, rgba(14, 0, 255, 0.2%) 50%, rgba(14, 0, 255, 0) 100%);
-    left: -150%;
-    right: -50%;
-    top: -150%;
-    opacity: 0.1;
-    bottom: 0;
-    z-index: -1;
-    overflow: hidden;
-  }
+    &:before {
+        display: block;
+        content: "";
+        position: absolute;
+        background: radial-gradient(
+            circle,
+            rgba(14, 0, 255, 40) 0%,
+            rgba(14, 0, 255, 0.2%) 50%,
+            rgba(14, 0, 255, 0) 100%
+        );
+        left: -150%;
+        right: -50%;
+        top: -150%;
+        opacity: 0.1;
+        bottom: 0;
+        z-index: -1;
+        overflow: hidden;
+
+        @include mixins.mobile {
+            display: none;
+        }
+    }
+}
+
+article {
+    max-width: 780px;
+    margin: 0 auto;
+
+    p {
+        font-size: 1.25em;
+        margin-bottom: calc(var(--bulma-size-3) * 1);
+        line-height: 1.75em;
+    }
 }

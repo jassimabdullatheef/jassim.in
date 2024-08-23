@@ -1,39 +1,49 @@
 <script>
-  import { fade, slide } from "svelte/transition";
-  import "bulma/css/bulma.css";
-  import "$lib/style/root.scss";
+    import { navigating } from "$app/stores";
+    import "bulma/css/bulma.css";
+    import "$lib/style/root.scss";
 
-  import Navigation from "$lib/components/Navigation.svelte";
-  import PageTransition from "$lib/components/Transition.svelte";
+    import menuIcon from "$lib/icons/menu.svelte";
 
-  export let data;
-  let visible = true;
-  const delay = 250;
+    import Navigation from "$lib/components/Navigation.svelte";
+    import PageTransition from "$lib/components/Transition.svelte";
+
+    export let data;
+    let visible = false;
+    let innerHeight;
+    let innerWidth;
+
+    $: isSmallScreen = innerWidth < 768;
+
+    // On route change
+    const onRouteChange = () => {
+        visible = false;
+    };
+
+    $: if ($navigating) onRouteChange();
 </script>
 
-<div class="columns mb-0">
-  {#if visible}
-    <div
-      class="column nav-container"
-      in:slide={{ axis: "x", delay }}
-      out:slide={{ axis: "x", delay }}
+<svelte:window bind:innerHeight bind:innerWidth />
+
+{#if !visible}
+    <button
+        class="button is-text is-large nav-button"
+        on:click={() => (visible = !visible)}
     >
-      <Navigation bind:visible />
+        <span class="icon">
+            <svelte:component this={menuIcon} />
+        </span>
+    </button>
+{/if}
+<div class="columns mb-0 main-layout">
+    <div class={`column nav-container ${visible ? "expanded" : ""}`}>
+        <Navigation bind:visible bind:isSmallScreen />
     </div>
-  {/if}
-  <div class="column">
-    <div class="container mt-5">
-      <PageTransition key={data.url}>
-        <slot></slot>
-      </PageTransition>
+    <div class={`column content-container ${visible ? "" : "expanded"}`}>
+        <div class="container mt-5">
+            <PageTransition key={data.url}>
+                <slot></slot>
+            </PageTransition>
+        </div>
     </div>
-  </div>
 </div>
-
-<style>
-  .nav-container {
-    height: calc(100vh + var(--bulma-column-gap));
-    max-width: calc(var(--bulma-size-1) * 6);
-  }
-</style>
-
