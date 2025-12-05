@@ -1,5 +1,6 @@
 <script>
     import { lazyLoad } from "$lib/utils/lazyload";
+    import helloImage from "$lib/images/hello.png";
 
     export let data;
 </script>

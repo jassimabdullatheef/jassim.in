@@ -140,14 +140,13 @@
     --primary_blue: rgba(0, 0, 255, 0.8);
     --secondary_yellow: rgba(255, 255, 0, 0.4);
     --page-padding: 1rem;
-    --columns: 15;
+    --columns: 20;
     --cursor-radius: 0;
     --color-text: #cdbcbc;
     --color-bg: #000;
     --color-link: #fff;
     --color-link-hover: #fff;
-    --cursor-bg: rgba(0, 0, 255, 0.8);
-    --cursor-bg-2: rgba(0, 0, 255, 0.2);
+    --cursor-bg: rgba(144, 71, 248, 0.6);
     --cursor-blend-mode: exclusion;
     --gradient-text-1: var(--secondary_yellow);
     --gradient-text-2: var(--primary_blue);
