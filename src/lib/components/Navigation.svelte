@@ -29,7 +29,6 @@
         { text: "Library", url: "/library", icon: bookIcon },
         { text: "Music", url: "/music", icon: musicIcon },
         { text: "Photography", url: "/photography", icon: cameraIcon },
-        { text: "Contact", url: "/contact", icon: contactIcon },
     ];
 
     const toggleVisibility = (isVisible = false) => {

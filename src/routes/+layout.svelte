@@ -2,6 +2,7 @@
     import { navigating } from "$app/stores";
     import "bulma/css/bulma.css";
     import "$lib/style/root.scss";
+    import "gsap/dist/gsap.min.js";
 
     import menuIcon from "$lib/icons/menu.svelte";
 

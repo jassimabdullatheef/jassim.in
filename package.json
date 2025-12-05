@@ -22,6 +22,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"bulma": "^1.0.2"
+		"bulma": "^1.0.2",
+		"gray-matter": "^4.0.3",
+		"gsap": "^3.13.0",
+		"marked": "^17.0.1"
 	}
 }

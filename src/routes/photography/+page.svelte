@@ -1,6 +1,5 @@
 <script>
     import { lazyLoad } from "$lib/utils/lazyload";
-    import helloImage from "$lib/images/hello.png";
 
     export let data;
 </script>
@@ -9,7 +8,7 @@
     <title>Photography</title>
 </svelte:head>
 
-<div class="block">
+<div class="block pb-5">
     <div class="columns is-justify-content-center mt-2">
         <div class="column is-8">
             <h1 class="is-size-2 mb-6 mt-6">Photography</h1>

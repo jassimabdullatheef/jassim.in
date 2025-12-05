@@ -2,7 +2,7 @@
     <title>About Me</title>
 </svelte:head>
 
-<section class="container">
+<section class="container pb-5">
     <article>
         <h1 class="is-size-1-tablet is-size-3-mobile mb-6 mt-6">About Me</h1>
         <hr />

@@ -3,11 +3,57 @@
   import { scale } from "svelte/transition";
   import helloImage from "$lib/images/hello.png";
 
+  import { GooCursor } from "$lib/utils/cursor.js";
+
   import svelteLogo from "$lib/icons/svelte.svelte";
   import bulmaLogo from "$lib/icons/bulma.svelte";
 
   let ready = false;
-  onMount(() => (ready = true));
+  let cursorEl = null;
+
+  onMount(() => {
+    ready = true;
+  });
+
+  $: if (cursorEl) {
+    console.log(cursorEl, document, document.querySelector(".cursor"));
+
+    const goo = new GooCursor(cursorEl);
+
+    window.addEventListener("click", () => {
+      gsap
+        .timeline()
+        .addLabel("start", 0)
+        .to(
+          goo.DOM.cells,
+          {
+            duration: 1,
+            ease: "power4",
+            opacity: 1,
+            stagger: {
+              from: [...goo.DOM.cells].indexOf(goo.getCellAtCursor()),
+              each: 0.02,
+              grid: [goo.rows, goo.columns],
+            },
+          },
+          "start"
+        )
+        .to(
+          goo.DOM.cells,
+          {
+            duration: 1,
+            ease: "power1",
+            opacity: 0,
+            stagger: {
+              from: [...goo.DOM.cells].indexOf(goo.getCellAtCursor()),
+              each: 0.03,
+              grid: [goo.rows, goo.columns],
+            },
+          },
+          "start+=0.3"
+        );
+    });
+  }
 </script>
 
 <svelte:head>
@@ -16,13 +62,36 @@
 
 <div>
   <div
-    class="title-wrapper is-flex is-justify-content-center is-flex-direction-column is-align-items-center"
+    class="title-wrapper is-flex is-justify-content-center is-flex-direction-column is-align-items-center mb-6"
   >
     {#if ready}
       <h1 class="title" in:scale={{ start: 0.8, delay: 0, duration: 1500 }}>
         &#60;Hello World!&#62;
       </h1>
     {/if}
+    <div class="cursor" bind:this={cursorEl}>
+      <div class="cursor__inner">
+        <!-- cursor__inner-box elements come here -->
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+          <filter id="gooey">
+            <feGaussianBlur
+              in="SourceGraphic"
+              result="blur"
+              stdDeviation="3.2"
+            />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -7"
+              result="goo"
+            />
+            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+          </filter>
+        </defs>
+      </svg>
+    </div>
   </div>
   <section class="block">
     <div class="box">
@@ -66,6 +135,24 @@
 
 <style scoped lang="scss">
   @use "bulma/sass/utilities/mixins";
+
+  :root {
+    --primary_blue: rgba(0, 0, 255, 0.8);
+    --secondary_yellow: rgba(255, 255, 0, 0.4);
+    --page-padding: 1rem;
+    --columns: 15;
+    --cursor-radius: 0;
+    --color-text: #cdbcbc;
+    --color-bg: #000;
+    --color-link: #fff;
+    --color-link-hover: #fff;
+    --cursor-bg: rgba(0, 0, 255, 0.8);
+    --cursor-bg-2: rgba(0, 0, 255, 0.2);
+    --cursor-blend-mode: exclusion;
+    --gradient-text-1: var(--secondary_yellow);
+    --gradient-text-2: var(--primary_blue);
+  }
+
   .title-wrapper {
     position: relative;
     min-height: 90vh;
@@ -98,10 +185,10 @@
     }
 
     &:before {
-      color: rgba(0, 0, 255, 0.8);
+      color: var(--primary_blue);
     }
     &:after {
-      color: rgba(255, 255, 0, 0.4);
+      color: var(--secondary_yellow);
     }
 
     &:before {
@@ -134,6 +221,41 @@
     .hello-image {
       width: var(--bulma-size-1);
       min-width: var(--bulma-size-1);
+    }
+  }
+
+  .cursor {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: 10;
+    mix-blend-mode: var(--cursor-blend-mode);
+    --size: calc((100vw - 160px) / var(--columns));
+    background-image: url("$lib/images/home-bg.jpg");
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-color: var(--color-bg);
+
+    @include mixins.mobile {
+      --size: calc((100vw - 40px) / var(--columns));
+    }
+
+    .cursor__inner {
+      display: grid;
+      grid-template-columns: repeat(var(--columns), var(--size));
+    }
+    :global(.cursor__inner-box) {
+      width: var(--size);
+      height: var(--size);
+      background: var(--cursor-bg);
+      opacity: 0;
+      border-radius: var(--cursor-radius);
     }
   }
 </style>
