@@ -1,46 +1,50 @@
 import { marked } from 'marked';
 import matter from 'gray-matter';
-import { readFileSync, readdirSync } from 'fs';
-import { join } from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import { preprocessSidenotes } from './sidenotes.js';
 import { preprocessPSNotes } from './psnotes.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Get the posts directory path - resolve relative to this file's location
-const postsDir = join(__dirname, '../../routes/blog/posts');
+// Import all markdown files at build time using Vite's glob import
+// This ensures they're included in the production bundle
+const postModules = import.meta.glob('/src/routes/blog/posts/*.md', { 
+  eager: true, 
+  as: 'raw'
+});
 
 /**
  * Get all markdown files from the posts directory
- * @returns {Array} Array of post metadata
+ * @returns {Array<{slug: string, frontmatter: any, excerpt: string}>} Array of post metadata
  */
 export function loadPosts() {
   try {
-    const files = readdirSync(postsDir).filter(file => file.endsWith('.md'));
     const posts = [];
 
-    for (const file of files) {
-      const filePath = join(postsDir, file);
-      const rawContent = readFileSync(filePath, 'utf-8');
-      const { data: frontmatter, content } = matter(rawContent);
+    // Iterate through all imported markdown files
+    for (const [path, rawContent] of Object.entries(postModules)) {
+      // Extract slug from file path
+      // path format: /src/routes/blog/posts/filename.md
+      const pathParts = path.split('/');
+      const filename = pathParts[pathParts.length - 1];
+      if (!filename) continue;
       
-      // Extract slug from filename
-      const slug = file.replace(/\.md$/, '');
+      const slug = filename.replace(/\.md$/, '');
+      
+      // Handle both string and Promise<string> (though with eager: true it should be string)
+      const content = typeof rawContent === 'string' ? rawContent : String(rawContent);
+      
+      // Parse frontmatter and content
+      const { data: frontmatter, content: markdownContent } = matter(content);
 
       posts.push({
         slug,
         frontmatter,
-        excerpt: frontmatter.excerpt || content.substring(0, 150) + '...'
+        excerpt: frontmatter.excerpt || markdownContent.substring(0, 150) + '...'
       });
     }
 
     // Sort posts by date (newest first)
     return posts.sort((a, b) => {
-      const dateA = new Date(a.frontmatter.date || 0);
-      const dateB = new Date(b.frontmatter.date || 0);
+      const dateA = new Date(a.frontmatter.date || 0).getTime();
+      const dateB = new Date(b.frontmatter.date || 0).getTime();
       return dateB - dateA;
     });
   } catch (error) {
@@ -56,43 +60,52 @@ export function loadPosts() {
  */
 export function loadPost(slug) {
   try {
-    const filePath = join(postsDir, `${slug}.md`);
-    
-    // Check if file exists
-    try {
-      const rawContent = readFileSync(filePath, 'utf-8');
-      const { data: frontmatter, content } = matter(rawContent);
-      
-      // Preprocess sidenotes before converting markdown to HTML
-      let preprocessedContent;
-      try {
-        preprocessedContent = preprocessSidenotes(content);
-      } catch (preprocessError) {
-        console.error(`Error preprocessing sidenotes for ${slug}:`, preprocessError);
-        // Fall back to content without sidenote preprocessing
-        preprocessedContent = content;
-      }
-      
-      // Convert markdown to HTML
-      let html = marked(preprocessedContent);
-      
-      // Process PS notes after markdown conversion
-      try {
-        html = preprocessPSNotes(html);
-      } catch (psError) {
-        console.error(`Error processing PS notes for ${slug}:`, psError);
-        // Continue with HTML as is
-      }
+    // Find the post by matching the slug in the path
+    const postEntry = Object.entries(postModules).find(([path]) => {
+      const pathParts = path.split('/');
+      const filename = pathParts[pathParts.length - 1];
+      if (!filename) return false;
+      const pathSlug = filename.replace(/\.md$/, '');
+      return pathSlug === slug;
+    });
 
-      return {
-        slug,
-        frontmatter,
-        content: html
-      };
-    } catch (fileError) {
-      console.error(`Error reading file ${filePath}:`, fileError);
+    if (!postEntry) {
       return null;
     }
+
+    const [, rawContent] = postEntry;
+    
+    // Handle both string and Promise<string> (though with eager: true it should be string)
+    const content = typeof rawContent === 'string' ? rawContent : String(rawContent);
+    
+    const { data: frontmatter, content: markdownContent } = matter(content);
+    
+    // Preprocess sidenotes before converting markdown to HTML
+    let preprocessedContent;
+    try {
+      preprocessedContent = preprocessSidenotes(markdownContent);
+    } catch (preprocessError) {
+      console.error(`Error preprocessing sidenotes for ${slug}:`, preprocessError);
+      // Fall back to content without sidenote preprocessing
+      preprocessedContent = markdownContent;
+    }
+    
+    // Convert markdown to HTML
+    let html = /** @type {string} */ (marked(preprocessedContent));
+    
+    // Process PS notes after markdown conversion
+    try {
+      html = preprocessPSNotes(html);
+    } catch (psError) {
+      console.error(`Error processing PS notes for ${slug}:`, psError);
+      // Continue with HTML as is
+    }
+
+    return {
+      slug,
+      frontmatter,
+      content: html
+    };
   } catch (error) {
     console.error(`Error loading post ${slug}:`, error);
     return null;
