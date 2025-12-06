@@ -1,8 +1,31 @@
 <script>
-  import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  
+  import { page } from "$app/stores";
+  import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
+
+  import Button from "$lib/components/Button.svelte";
+
   export let data;
+
+  let scrolled = false;
+  let scrollThreshold = 200; // Show buttons after scrolling 200px
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handleScroll() {
+    scrolled = window.scrollY > scrollThreshold;
+  }
+
+  onMount(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Check initial scroll position
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
 </script>
 
 <svelte:head>
@@ -12,17 +35,19 @@
   {/if}
 </svelte:head>
 
-<section class="container pb-5">
+<section class="container article-container">
   <article>
-    <a 
-      href="/blog" 
-      class="button is-text mb-5"
-      on:click|preventDefault={() => goto('/blog')}
+    <Button
+      href="/blog"
+      icon="←"
+      iconPosition="left"
     >
-      ← Back to Blog
-    </a>
-    
-    <div class="is-flex is-justify-content-space-between is-align-items-start mb-4">
+      Back to Blog
+    </Button>
+
+    <div
+      class="is-flex is-justify-content-space-between is-align-items-start mb-4"
+    >
       <h1 class="is-size-1-tablet is-size-3-mobile mb-0">
         {data.post.frontmatter.title}
       </h1>
@@ -32,69 +57,88 @@
         </span>
       {/if}
     </div>
-    
+
     {#if data.post.frontmatter.date}
       <p class="is-size-6 has-text-grey mb-5">
-        {new Date(data.post.frontmatter.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+        {new Date(data.post.frontmatter.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         })}
       </p>
     {/if}
-    
+
     <hr class="mb-6" />
-    
+
     <div class="content blog-content">
       {@html data.post.content}
     </div>
   </article>
 </section>
 
+{#if scrolled}
+  <div class="post-navigation">
+    <div class="nav-container">
+      <Button onClick={scrollToTop} icon="↑" iconPosition="left">
+        Back to Top
+      </Button>
+      {#if data.nextPost}
+        <Button href="/blog/{data.nextPost.slug}" icon="→" iconPosition="right">
+          Read Next
+        </Button>
+      {/if}
+    </div>
+  </div>
+{/if}
+
 <style scoped lang="scss">
+  .article-container {
+    padding-bottom: 7rem;
+  }
   .blog-content {
-    font-size: 1.25em;
     line-height: 1.75em;
-    
+
     :global(h1) {
       font-size: 2em;
       margin-top: 1.5em;
       margin-bottom: 0.5em;
     }
-    
+
     :global(h2) {
       font-size: 1.75em;
       margin-top: 1.25em;
       margin-bottom: 0.5em;
     }
-    
+
     :global(h3) {
       font-size: 1.5em;
       margin-top: 1em;
       margin-bottom: 0.5em;
     }
-    
+
     :global(p) {
       margin-bottom: 1em;
     }
-    
-    :global(ul), :global(ol) {
+
+    :global(ul),
+    :global(ol) {
+      font-size: 1.2em;
       margin-left: 2em;
       margin-bottom: 1em;
     }
-    
+
     :global(li) {
       margin-bottom: 0.5em;
     }
-    
+
     :global(code) {
       background-color: rgba(0, 0, 0, 0.1);
       padding: 0.2em 0.4em;
       border-radius: 3px;
-      font-family: 'Courier New', monospace;
+      font-family: "Courier New", monospace;
       font-size: 0.9em;
     }
-    
+
     :global(pre) {
       background-color: rgba(0, 0, 0, 0.1);
       padding: 1em;
@@ -102,12 +146,12 @@
       overflow-x: auto;
       margin-bottom: 1em;
     }
-    
+
     :global(pre code) {
       background-color: transparent;
       padding: 0;
     }
-    
+
     :global(blockquote) {
       border-left: 4px solid var(--color-blue);
       padding-left: 1em;
@@ -115,7 +159,7 @@
       margin-bottom: 1em;
       font-style: italic;
     }
-    
+
     :global(a) {
       color: hsl(var(--bulma-link-h), var(--bulma-link-s), 50%);
       background: var(--color-blue);
@@ -133,7 +177,7 @@
       display: inline-block;
       position: relative;
     }
-    
+
     :global(a::before) {
       content: "";
       position: absolute;
@@ -150,7 +194,7 @@
       transform: scaleX(0);
       transition: all 0.2s ease-in-out;
     }
-    
+
     :global(a:hover) {
       background: linear-gradient(
         230deg,
@@ -163,7 +207,7 @@
       -webkit-text-fill-color: transparent;
       text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.5);
     }
-    
+
     :global(a:hover::before) {
       visibility: visible;
       transform: scaleX(1);
@@ -173,21 +217,21 @@
         var(--color-yellow) 100%
       );
     }
-    
+
     :global(img) {
       max-width: 100%;
       height: auto;
       border-radius: 5px;
       margin: 1.5em 0;
     }
-    
+
     /* Sidenote styles */
     :global(.sidenote-ref) {
       position: relative;
       display: inline;
       cursor: help;
     }
-    
+
     :global(.sidenote-marker) {
       display: inline-flex;
       align-items: center;
@@ -199,18 +243,18 @@
       transition: color 0.2s ease-in-out;
       line-height: 1;
     }
-    
+
     :global(.sidenote-marker .sidenote-icon) {
       width: 1em;
       height: 1em;
       display: inline-block;
       vertical-align: middle;
     }
-    
+
     :global(.sidenote-ref:hover .sidenote-marker) {
       color: var(--color-yellow);
     }
-    
+
     :global(.sidenote-content) {
       position: absolute;
       bottom: 100%;
@@ -228,11 +272,26 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+      transition:
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        transform 0.2s ease-in-out;
       z-index: 1000;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
-    
+
+    /* Allow links in sidenotes to be clickable and styled */
+    :global(.sidenote-content a) {
+      pointer-events: auto;
+      color: #77d2ff;
+      text-decoration: underline;
+      transition: color 0.2s ease-in-out;
+    }
+
+    :global(.sidenote-content a:hover) {
+      color: #fde72d;
+    }
+
     /* Arrow pointing down */
     :global(.sidenote-content::after) {
       content: "";
@@ -243,13 +302,13 @@
       border: 6px solid transparent;
       border-top-color: rgba(0, 0, 0, 0.9);
     }
-    
+
     :global(.sidenote-ref:hover .sidenote-content) {
       opacity: 1;
       visibility: visible;
       transform: translateX(-50%) translateY(-12px);
     }
-    
+
     /* Mobile: show sidenotes inline instead of on hover */
     @media (max-width: 768px) {
       :global(.sidenote-content) {
@@ -263,20 +322,20 @@
         width: 100%;
         max-width: 100%;
       }
-      
+
       :global(.sidenote-content::after) {
         display: none;
       }
-      
+
       :global(.sidenote-marker) {
         display: none;
       }
-      
+
       :global(.sidenote-ref) {
         display: block;
       }
     }
-    
+
     /* PS Note styles - personalized feel */
     :global(.ps-note) {
       margin: 3em 0 2em 0;
@@ -292,12 +351,12 @@
       font-style: italic;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease-in-out;
-      
+
       &:hover {
         box-shadow: 0 4px 16px rgba(119, 210, 255, 0.15);
         transform: translateX(4px);
       }
-      
+
       &::before {
         content: "";
         position: absolute;
@@ -314,9 +373,9 @@
         opacity: 0.6;
       }
     }
-    
+
     :global(.ps-label) {
-      font-family: 'Courier New', 'Georgia', serif;
+      font-family: "Courier New", "Georgia", serif;
       font-size: 1.1em;
       font-weight: bold;
       color: var(--color-blue);
@@ -326,7 +385,7 @@
       font-style: normal;
       display: flex;
       align-items: center;
-      
+
       &::after {
         content: "";
         flex: 1;
@@ -340,14 +399,14 @@
         opacity: 0.3;
       }
     }
-    
+
     :global(.ps-content) {
       font-size: 1.05em;
       line-height: 1.8;
       color: rgba(255, 255, 255, 0.9);
       position: relative;
       padding-left: 0.5em;
-      
+
       &::before {
         content: '"';
         position: absolute;
@@ -360,25 +419,107 @@
         line-height: 1;
       }
     }
-    
+
     /* Mobile adjustments for PS notes */
     @media (max-width: 768px) {
       :global(.ps-note) {
         margin: 2em 0 1.5em 0;
         padding: 1.5em 1.5em;
-        
+
         &:hover {
           transform: none;
         }
       }
-      
+
       :global(.ps-label) {
         font-size: 1em;
       }
-      
+
       :global(.ps-content) {
         font-size: 1em;
       }
     }
+  }
+
+  .post-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1rem;
+    pointer-events: none;
+    animation: slideUp 0.3s ease-out;
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .nav-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      pointer-events: auto;
+      width: fit-content;
+      height: auto;
+
+      // Apple liquid glass effect
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 1rem 1.5rem;
+      box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.37),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+
+      // Subtle gradient overlay for depth
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2) 50%,
+          transparent
+        );
+        border-radius: 20px 20px 0 0;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .post-navigation {
+      padding: 0.75rem;
+
+      .nav-container {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 0.75rem;
+        border-radius: 16px;
+      }
+    }
+  }
+
+  // Ensure content doesn't get hidden behind sticky nav
+  section {
+    padding-bottom: 2rem;
   }
 </style>

@@ -1,20 +1,18 @@
 // load all the files from images directory
-const loadImages = () => {
-  let files = [];
-
+const loadImages = async () => {
   const imageModules = import.meta.glob("./images/*.{jpg,jpeg,png,gif}");
 
-  for (const modulePath in imageModules) {
-    imageModules[modulePath]().then(({ default: imageUrl }) => {
-      files.push(imageUrl);
-    });
-  }
+  const imagePromises = Object.values(imageModules).map(async (moduleLoader) => {
+    const module = await moduleLoader();
+    return /** @type {{ default: string }} */ (module).default;
+  });
 
+  const files = await Promise.all(imagePromises);
   return files;
 };
 
-export function load() {
+export async function load() {
   return {
-    images: loadImages(),
+    images: await loadImages(),
   };
 }

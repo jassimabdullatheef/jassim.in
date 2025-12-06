@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { scale } from "svelte/transition";
+  import { gsap } from "gsap";
   import helloImage from "$lib/images/hello.png";
 
   import { GooCursor } from "$lib/utils/cursor.js";
@@ -10,49 +11,54 @@
 
   let ready = false;
   let cursorEl = null;
+  let goo = null;
 
   onMount(() => {
     ready = true;
   });
 
-  $: if (cursorEl) {
-    console.log(cursorEl, document, document.querySelector(".cursor"));
+  const handleCursorClick = () => {
+    console.log("clicked");
+    if (!goo) {
+      goo = new GooCursor(cursorEl);
+    }
 
-    const goo = new GooCursor(cursorEl);
 
-    window.addEventListener("click", () => {
-      gsap
-        .timeline()
-        .addLabel("start", 0)
-        .to(
-          goo.DOM.cells,
-          {
-            duration: 1,
-            ease: "power4",
-            opacity: 1,
-            stagger: {
-              from: [...goo.DOM.cells].indexOf(goo.getCellAtCursor()),
-              each: 0.02,
-              grid: [goo.rows, goo.columns],
-            },
+    gsap
+      .timeline()
+      .addLabel("start", 0)
+      .to(
+        goo.DOM.cells,
+        {
+          duration: 1,
+          ease: "power4",
+          opacity: 1,
+          stagger: {
+            from: [...goo.DOM.cells].indexOf(goo.getCellAtCursor()),
+            each: 0.02,
+            grid: [goo.rows, goo.columns],
           },
-          "start"
-        )
-        .to(
-          goo.DOM.cells,
-          {
-            duration: 1,
-            ease: "power1",
-            opacity: 0,
-            stagger: {
-              from: [...goo.DOM.cells].indexOf(goo.getCellAtCursor()),
-              each: 0.03,
-              grid: [goo.rows, goo.columns],
-            },
+        },
+        "start"
+      )
+      .to(
+        goo.DOM.cells,
+        {
+          duration: 1,
+          ease: "power1",
+          opacity: 0,
+          stagger: {
+            from: [...goo.DOM.cells].indexOf(goo.getCellAtCursor()),
+            each: 0.03,
+            grid: [goo.rows, goo.columns],
           },
-          "start+=0.3"
-        );
-    });
+        },
+        "start+=0.3"
+      );
+  };
+
+  $: if (cursorEl && typeof window !== "undefined") {
+    goo = new GooCursor(cursorEl);
   }
 </script>
 
@@ -69,7 +75,7 @@
         &#60;Hello World!&#62;
       </h1>
     {/if}
-    <div class="cursor" bind:this={cursorEl}>
+    <div class="cursor" bind:this={cursorEl} on:click={handleCursorClick}>
       <div class="cursor__inner">
         <!-- cursor__inner-box elements come here -->
       </div>
@@ -146,7 +152,7 @@
     --color-bg: #000;
     --color-link: #fff;
     --color-link-hover: #fff;
-    --cursor-bg: rgba(144, 71, 248, 0.6);
+    --cursor-bg: rgb(195, 163, 227);
     --cursor-blend-mode: exclusion;
     --gradient-text-1: var(--secondary_yellow);
     --gradient-text-2: var(--primary_blue);
@@ -229,7 +235,7 @@
     width: 100%;
     left: 0;
     top: 0;
-    pointer-events: none;
+    pointer-events: auto;
     border-radius: 20px;
     overflow: hidden;
     z-index: 10;
@@ -255,6 +261,7 @@
       background: var(--cursor-bg);
       opacity: 0;
       border-radius: var(--cursor-radius);
+      mix-blend-mode: difference;
     }
   }
 </style>

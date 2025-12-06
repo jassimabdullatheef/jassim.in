@@ -1,5 +1,6 @@
 // Import required functions from './utils.js'
 import { getMousePos, getWinSize, isFirefox } from "$lib/utils/utils.js";
+import { gsap } from "gsap";
 
 // Initialize mouse position object
 let mousepos = { x: 0, y: 0 };
@@ -151,7 +152,7 @@ export class GooCursor {
    */
   getCellAtCursor() {
     const columnIndex = Math.floor(mousepos.x / this.cellSize);
-    const rowIndex = Math.floor(mousepos.y / this.cellSize);
+    const rowIndex = Math.floor((mousepos.y - 60) / this.cellSize);
     const cellIndex = rowIndex * this.columns + columnIndex;
 
     if (cellIndex >= this.cellsTotal || cellIndex < 0) {

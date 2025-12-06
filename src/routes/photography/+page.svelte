@@ -1,6 +1,5 @@
 <script>
     import { lazyLoad } from "$lib/utils/lazyload";
-    import helloImage from "$lib/images/hello.png";
 
     export let data;
 </script>
@@ -43,8 +42,8 @@
     img {
         opacity: 0;
         transition:
-            opacity 5s ease,
-            transform 0.4s ease-in-out;
+            opacity 3s ease,
+            transform 0.2s ease-in-out;
         max-width: 100%;
         max-height: 80vh;
         box-shadow:

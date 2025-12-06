@@ -5,7 +5,6 @@ excerpt: How social media went from a tool for connection to a force that divide
 category: Observation
 ---
 
-
 When social media first appeared, it felt like a gift—simple, warm, and sincere. It reconnected us with childhood friends we thought we'd lost forever. It kept families close despite borders. It gave ordinary people the extraordinary ability to share their lives with the world. It made our voices louder and our distances smaller. And it did all of this for free, wrapped in the promise of a kinder, more connected world.
 
 In those days, the internet felt like a modest neighborhood café where everyone gathered. We posted without filters, wrote without fear, laughed without calculating who might see it, and carried our online presence lightly. Social media was a companion, not a compass.
@@ -52,7 +51,8 @@ Even identity—a cornerstone of youth—became vulnerable. Teens reported feeli
 
 While we navigated our own crises of self-worth, another transformation was taking place behind closed doors. Algorithms—vast, calculating, exquisitely precise—began to monitor everything we did: every click, every pause, every hesitation. Their job was simple: understand us better than we understand ourselves and keep us engaged for as long as possible.
 
-To do this, they tracked our preferences, predicted our desires, and arranged our feeds to match our beliefs. The intention was not sinister; these systems were built to make our experience smoother, more relevant, more enjoyable. Yet the outcome was profound. By feeding us what we already liked, they gradually closed us off from opposing viewpoints. Echo chambers formed. Polarization deepened. Civil discourse weakened.
+To do this, they tracked our preferences, predicted our desires, and arranged our feeds to match our beliefs. The intention was not sinister; these systems were built to make our experience smoother, more relevant, more enjoyable. Yet the outcome was profound. By feeding us what we already liked, they gradually closed us off from opposing viewpoints[sn: Remember the cambridge analytica scandal? If not, look it up: <a href="https://en.wikipedia.org/wiki/Facebook%E2%80%93Cambridge_Analytica_data_scandal" target="_blank">Facebook–Cambridge Analytica data scandal
+</a>]. Echo chambers formed. Polarization deepened. Civil discourse weakened.
 
 Meanwhile, misinformation began to spread at a velocity no newspaper or broadcaster could ever match. Content no longer needed to be true; it only needed to be shareable. Entire societies felt the effect of this shift. Public health decisions, political movements, and cultural debates became vulnerable to distortions and half-truths circulating at light speed.
 
@@ -71,7 +71,7 @@ As individuals sought validation, corporations sought profit. They recognized th
 
 Ethics became optional. Engagement became the only metric that mattered.
 
-We were no longer users but targets—pulled into a digital hunting ground where our focus, our impulses, and even our emotions could be monetized.
+We were no longer users but targets—pulled into a digital hunting ground where our focus [sn: Yup, we are an invisible prey and we don't even know it.], our impulses, and even our emotions could be monetized.
 
 ---
 
