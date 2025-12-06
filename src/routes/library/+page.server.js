@@ -1,8 +1,11 @@
-import { readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-
 const ITEMS_PER_PAGE = 20;
+
+// Import CSV file at build time using Vite's glob import
+// This ensures it's included in the production bundle
+const csvModules = import.meta.glob("/src/routes/library/books-db.csv", {
+  eager: true,
+  as: "raw",
+});
 
 // Load all book cover images from $lib/images/book-cover
 const loadBookCovers = async () => {
@@ -160,11 +163,17 @@ function organizeBooksByDate(books, coverMap) {
       }
 
       // Check Exclusive Shelf - it may have extra text like "read" or "read (#5)"
-      const exclusiveShelf = (book["Exclusive Shelf"] || "").toLowerCase().trim();
+      const exclusiveShelf = (book["Exclusive Shelf"] || "")
+        .toLowerCase()
+        .trim();
       // Match exact or with extra text (like "read (#5)" or "currently-reading (#7)")
-      const isRead = exclusiveShelf === "read" || /^read\s/.test(exclusiveShelf);
-      const isCurrentlyReading = exclusiveShelf === "currently-reading" || /^currently-reading\s/.test(exclusiveShelf);
-      const isToRead = exclusiveShelf === "to-read" || /^to-read\s/.test(exclusiveShelf);
+      const isRead =
+        exclusiveShelf === "read" || /^read\s/.test(exclusiveShelf);
+      const isCurrentlyReading =
+        exclusiveShelf === "currently-reading" ||
+        /^currently-reading\s/.test(exclusiveShelf);
+      const isToRead =
+        exclusiveShelf === "to-read" || /^to-read\s/.test(exclusiveShelf);
 
       return {
         ...book,
@@ -200,36 +209,27 @@ export async function load({ url }) {
     // Load book covers from $lib/images/book-cover
     const coverMap = await loadBookCovers();
 
-    // Read CSV file from static folder (always included in build)
-    // Static files are guaranteed to be available in all deployment environments
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    
-    // Try static folder first (works in production)
-    let csvText;
-    let csvPath;
-    
-    try {
-      // Path resolution: go up from .svelte-kit/output/server/entries/pages/library
-      // to project root, then to static folder
-      const projectRoot = process.cwd();
-      csvPath = join(projectRoot, "static/books-db.csv");
-      csvText = readFileSync(csvPath, "utf-8");
-    } catch (staticError) {
-      // Fallback: try relative to source file (for development)
-      try {
-        csvPath = join(process.cwd(), "src/routes/library/books-db.csv");
-        csvText = readFileSync(csvPath, "utf-8");
-      } catch (sourceError) {
-        throw new Error(`Could not find books-db.csv in static/ or src/routes/library/. Make sure the file exists in the static folder.`);
-      }
+    // Get CSV content from imported module (included at build time)
+    const csvPath = "/src/routes/library/books-db.csv";
+    const csvModule = csvModules[csvPath];
+
+    if (!csvModule) {
+      throw new Error(
+        "Could not load books-db.csv. Make sure the file exists at src/routes/library/books-db.csv"
+      );
     }
-    
+
+    // Handle both string and Promise<string> (though with eager: true it should be string)
+    const csvText =
+      typeof csvModule === "string" ? csvModule : String(csvModule);
+
     const books = parseCSV(csvText);
     const organizedBooks = organizeBooksByDate(books, coverMap);
 
     // Filter out "To Read" books
-    const filteredBooks = organizedBooks.filter((/** @type {any} */ book) => !book.isToRead);
+    const filteredBooks = organizedBooks.filter(
+      (/** @type {any} */ book) => !book.isToRead
+    );
 
     // Return all books for client-side filtering
     return {
