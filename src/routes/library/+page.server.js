@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const ITEMS_PER_PAGE = 20;
 
@@ -199,8 +200,31 @@ export async function load({ url }) {
     // Load book covers from $lib/images/book-cover
     const coverMap = await loadBookCovers();
 
-    const csvPath = join(process.cwd(), "src/routes/library/books-db.csv");
-    const csvText = readFileSync(csvPath, "utf-8");
+    // Read CSV file from static folder (always included in build)
+    // Static files are guaranteed to be available in all deployment environments
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    
+    // Try static folder first (works in production)
+    let csvText;
+    let csvPath;
+    
+    try {
+      // Path resolution: go up from .svelte-kit/output/server/entries/pages/library
+      // to project root, then to static folder
+      const projectRoot = process.cwd();
+      csvPath = join(projectRoot, "static/books-db.csv");
+      csvText = readFileSync(csvPath, "utf-8");
+    } catch (staticError) {
+      // Fallback: try relative to source file (for development)
+      try {
+        csvPath = join(process.cwd(), "src/routes/library/books-db.csv");
+        csvText = readFileSync(csvPath, "utf-8");
+      } catch (sourceError) {
+        throw new Error(`Could not find books-db.csv in static/ or src/routes/library/. Make sure the file exists in the static folder.`);
+      }
+    }
+    
     const books = parseCSV(csvText);
     const organizedBooks = organizeBooksByDate(books, coverMap);
 
