@@ -22,9 +22,14 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@openai/agents": "^0.3.4",
+		"@openai/agents-extensions": "^0.3.4",
+		"@openrouter/ai-sdk-provider": "^1.5.2",
+		"ai": "^5.0.108",
 		"bulma": "^1.0.2",
 		"gray-matter": "^4.0.3",
 		"gsap": "^3.13.0",
-		"marked": "^17.0.1"
+		"marked": "^17.0.1",
+		"zod": "^3.25.76"
 	}
 }

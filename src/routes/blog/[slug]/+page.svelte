@@ -1,6 +1,4 @@
 <script>
-  import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
   import { onMount } from "svelte";
 
   import Button from "$lib/components/Button.svelte";
@@ -37,13 +35,7 @@
 
 <section class="container article-container">
   <article>
-    <Button
-      href="/blog"
-      icon="←"
-      iconPosition="left"
-    >
-      Back to Blog
-    </Button>
+    <Button href="/blog" icon="←" iconPosition="left">Back to Blog</Button>
 
     <div
       class="is-flex is-justify-content-space-between is-align-items-start mb-4"

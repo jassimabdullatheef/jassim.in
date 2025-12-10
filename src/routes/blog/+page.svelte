@@ -18,6 +18,7 @@
 
 <svelte:head>
   <title>Blog</title>
+  <meta name="description" content="Read my thoughts on technology, life, and various interests. A personal blog where I share discoveries, experiments, and ideas." />
 </svelte:head>
 
 <section class="container pb-5">
