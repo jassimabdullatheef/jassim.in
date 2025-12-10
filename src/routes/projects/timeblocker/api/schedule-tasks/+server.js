@@ -1,9 +1,6 @@
 import { json } from "@sveltejs/kit";
 import { scheduleTasks } from "../../scheduleAgent.js";
 
-// For vercel edge functions, we need to set a max duration
-export const maxDuration = 60;
-
 /**
  * POST endpoint to schedule tasks within a daily time range
  *
