@@ -1,7 +1,7 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { OPENROUTER_API_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 
 // Define the schema for task structure
 const TaskSchema = z.object({
@@ -40,7 +40,7 @@ export async function processTasks(taskNames) {
   }
 
   // Check for API key
-  const apiKey = OPENROUTER_API_KEY;
+  const apiKey = env.OPENROUTER_API_KEY;
   if (!apiKey) {
     throw new Error("OPENROUTER_API_KEY environment variable is not set");
   }
