@@ -1,6 +1,9 @@
 import { json } from "@sveltejs/kit";
 import { processTasks } from "../../agent.js";
 
+// For vercel edge functions, we need to set a max duration
+export const maxDuration = 30;
+
 /**
  * POST endpoint to process a text block and extract structured task data
  *
