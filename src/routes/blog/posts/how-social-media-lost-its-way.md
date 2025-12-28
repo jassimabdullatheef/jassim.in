@@ -101,4 +101,4 @@ PS: I wrote this post as an answer for anyone who asks why I don't use social me
 
 ## Some additional readings:
 
-- [How We Lost Communication to Entertainment](https://ploum.net/2025-12-15-communication-entertainment.html) by [Ploum](https://ploum.net)
+- [How We Lost Communication to Entertainment](https://ploum.net/2025-12-15-communication-entertainment.html)
