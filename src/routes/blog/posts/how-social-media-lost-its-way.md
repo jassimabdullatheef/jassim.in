@@ -96,3 +96,9 @@ What began with good intentions became a force we must now learn to understand, 
 ---
 
 PS: I wrote this post as an answer for anyone who asks why I don't use social media. I originally named it "The new age cancer". But it felt like may be I was being too much dramatic about it. Hence the new title.
+
+---
+
+## Some additional readings:
+
+- [How We Lost Communication to Entertainment](https://ploum.net/2025-12-15-communication-entertainment.html) by [Ploum](https://ploum.net)
