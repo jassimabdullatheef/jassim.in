@@ -10,11 +10,12 @@
   let bpm = 120;
   let timeSignature = { numerator: 4, denominator: 4 };
   let soundType = "tick";
+  let countdown = { enabled: true, bars: 1 }; // bars: 0 (off), 1, or 2
   let showDialog = false;
   let speedProgression = {
     enabled: true,
     startBpm: 60,
-    finalBpm: 120,
+    finalBpm: 200,
     increment: 10,
     barsPerSpeed: 4,
     endBehavior: "continue",
@@ -60,12 +61,14 @@
       bpm: newBpm,
       timeSignature: newTimeSignature,
       soundType: newSoundType,
+      countdown: newCountdown,
       speedProgression: newSpeedProgression,
     } = event.detail;
 
     bpm = newBpm;
     timeSignature = newTimeSignature;
     soundType = newSoundType;
+    countdown = newCountdown || countdown;
     speedProgression = newSpeedProgression || speedProgression;
   }
 
@@ -221,6 +224,7 @@
     {bpm}
     {timeSignature}
     {soundType}
+    {countdown}
     {speedProgression}
     showSettingsButton={true}
     onSettingsClick={() => (showDialog = true)}
@@ -240,6 +244,7 @@
     {bpm}
     {timeSignature}
     {soundType}
+    {countdown}
     {speedProgression}
     on:close={() => (showDialog = false)}
     on:settings-change={handleSettingsChange}

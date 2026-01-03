@@ -5,6 +5,7 @@
   export let bpm = 120;
   export let timeSignature = { numerator: 4, denominator: 4 };
   export let soundType = "tick";
+  export let countdown = { enabled: true, bars: 1 }; // bars: 0 (off), 1, or 2
   export let speedProgression = {
     enabled: true,
     startBpm: 60,
@@ -21,7 +22,22 @@
   let localSoundType = soundType;
   let selectedTimeSignature = `${timeSignature.numerator}/${timeSignature.denominator}`;
   let localSpeedProgression = { ...speedProgression };
+  let localCountdown = { ...countdown };
   let activeTab = speedProgression.enabled ? "progressive" : "fixed";
+  
+  // Convert countdown to dropdown value: "off", "1", or "2"
+  $: countdownValue = localCountdown.enabled ? String(localCountdown.bars) : "off";
+  
+  function handleCountdownChange(event) {
+    const value = /** @type {HTMLSelectElement} */ (event.target).value;
+    if (value === "off") {
+      localCountdown.enabled = false;
+      localCountdown.bars = 0;
+    } else {
+      localCountdown.enabled = true;
+      localCountdown.bars = parseInt(value);
+    }
+  }
 
   const timeSignatureOptions = [
     { numerator: 2, denominator: 4 },
@@ -78,6 +94,7 @@
       bpm: localBpm,
       timeSignature: localTimeSignature,
       soundType: localSoundType,
+      countdown: localCountdown,
       speedProgression: localSpeedProgression,
     });
     dispatch("close");
@@ -90,6 +107,7 @@
     localSoundType = soundType;
     selectedTimeSignature = `${timeSignature.numerator}/${timeSignature.denominator}`;
     localSpeedProgression = { ...speedProgression };
+    localCountdown = { ...countdown };
     activeTab = speedProgression.enabled ? "progressive" : "fixed";
     dispatch("close");
   }
@@ -152,6 +170,20 @@
             </label>
           {/each}
         </div>
+      </div>
+
+      <div class="setting-group">
+        <label for="countdown">Countdown</label>
+        <select
+          id="countdown"
+          value={countdownValue}
+          on:change={handleCountdownChange}
+          class="countdown-select"
+        >
+          <option value="off">Off</option>
+          <option value="1">1 bar</option>
+          <option value="2">2 bars</option>
+        </select>
       </div>
 
       <div class="setting-group speed-progression-group">
@@ -491,6 +523,28 @@
     input[type="radio"]:checked + span {
       color: rgba(119, 210, 255, 1);
       font-weight: 600;
+    }
+  }
+
+  .countdown-select {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: rgba(119, 210, 255, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    option {
+      background: rgba(20, 20, 25, 0.95);
+      color: rgba(255, 255, 255, 0.9);
     }
   }
 

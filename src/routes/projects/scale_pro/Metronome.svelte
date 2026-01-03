@@ -9,6 +9,7 @@
   export let bpm = 120;
   export let timeSignature = { numerator: 4, denominator: 4 };
   export let soundType = "tick";
+  export let countdown = { enabled: true, bars: 1 }; // bars: 0 (off), 1, or 2
   export let speedProgression = {
     enabled: true,
     startBpm: 60,
@@ -21,12 +22,15 @@
   export let onSettingsClick = () => {};
 
   let isPlaying = false;
+  let isCountdown = false;
   let beatCount = 0;
   let barCount = 0;
   let currentSpeedIndex = 0;
   let isReversing = false;
   let barsUntilNextChange = 0;
   let barsAtCurrentSpeed = 0; // Track bars at current speed for progress
+  let countdownBarCount = 0;
+  let countdownBeatCount = 0;
   /** @type {number | null} */
   let nextBpm = null;
   /** @type {AudioContext | null} */
@@ -64,8 +68,36 @@
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Check initial state
 
+    // Add keyboard event listener for spacebar
+    /**
+     * @param {KeyboardEvent} event
+     */
+    const handleKeyDown = (event) => {
+      // Check if spacebar is pressed and not typing in an input/textarea
+      if (
+        event.key === " " ||
+        event.key === "Spacebar" ||
+        event.keyCode === 32
+      ) {
+        const target = /** @type {HTMLElement} */ (event.target);
+        // Don't trigger if user is typing in an input, textarea, or other editable element
+        if (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable
+        ) {
+          return;
+        }
+        event.preventDefault();
+        toggleMetronome();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   });
 
@@ -273,6 +305,46 @@
     }
   }
 
+  function startCountdown() {
+    if (!countdown.enabled || countdown.bars <= 0) {
+      startMetronome();
+      return;
+    }
+
+    isCountdown = true;
+    countdownBarCount = 0;
+    countdownBeatCount = 0;
+
+    // Use starting BPM from progressive settings if enabled, otherwise use regular BPM
+    const countdownBpm = speedProgression.enabled
+      ? speedProgression.startBpm
+      : bpm;
+    const interval = (60 / countdownBpm) * 1000; // Convert BPM to milliseconds
+
+    playBeat(true); // Play first beat as accent
+
+    intervalId = setInterval(() => {
+      countdownBeatCount = (countdownBeatCount + 1) % timeSignature.numerator;
+      const isAccent = countdownBeatCount === 0;
+      playBeat(isAccent);
+
+      // Check if we completed a bar
+      if (countdownBeatCount === 0) {
+        countdownBarCount++;
+        if (countdownBarCount >= countdown.bars) {
+          // Countdown complete, start actual metronome
+          if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+          }
+          isCountdown = false;
+          startMetronome();
+          return;
+        }
+      }
+    }, interval);
+  }
+
   function startMetronome() {
     if (isPlaying) return;
 
@@ -309,6 +381,7 @@
 
   function stopMetronome() {
     isPlaying = false;
+    isCountdown = false;
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = null;
@@ -316,6 +389,8 @@
     beatCount = 0;
     barCount = 0;
     barsAtCurrentSpeed = 0;
+    countdownBarCount = 0;
+    countdownBeatCount = 0;
     if (speedProgression.enabled) {
       barsUntilNextChange = speedProgression.barsPerSpeed;
       nextBpm = getNextBpm() ?? null;
@@ -325,10 +400,10 @@
   }
 
   function toggleMetronome() {
-    if (isPlaying) {
+    if (isPlaying || isCountdown) {
       stopMetronome();
     } else {
-      startMetronome();
+      startCountdown();
     }
   }
 
@@ -362,12 +437,22 @@
           </div>
         </div>
         <div>
+          {#if isCountdown}
+            <div class="countdown-indicator">
+              <span class="countdown-label">Countdown</span>
+              <div class="countdown-progress">
+                Bar {countdownBarCount + 1} / {countdown.bars}
+              </div>
+            </div>
+          {/if}
           <div class="beat-indicator">
             {#each Array(timeSignature.numerator) as _, i}
               <div
                 class="beat-dot"
-                class:active={isPlaying && beatCount === i}
+                class:active={(isPlaying && beatCount === i) ||
+                  (isCountdown && countdownBeatCount === i)}
                 class:accent={i === 0}
+                class:countdown={isCountdown}
               ></div>
             {/each}
           </div>
@@ -384,10 +469,10 @@
             {/if}
             <Button
               onClick={toggleMetronome}
-              variant={isPlaying ? "danger" : "primary"}
-              icon={isPlaying ? StopIcon : PlayIcon}
+              variant={isPlaying || isCountdown ? "danger" : "primary"}
+              icon={isPlaying || isCountdown ? StopIcon : PlayIcon}
             >
-              {isPlaying ? "Stop" : "Play"}
+              {isPlaying || isCountdown ? "Stop" : "Play"}
             </Button>
           </div>
         </div>
@@ -551,6 +636,40 @@
       border-color: rgba(253, 231, 45, 1);
       box-shadow: 0 0 20px rgba(253, 231, 45, 0.7);
     }
+
+    &.countdown.active {
+      background: rgba(255, 165, 0, 0.8);
+      border-color: rgba(255, 165, 0, 1);
+      box-shadow: 0 0 15px rgba(255, 165, 0, 0.6);
+    }
+
+    &.countdown.accent.active {
+      background: rgba(255, 140, 0, 0.9);
+      border-color: rgba(255, 140, 0, 1);
+      box-shadow: 0 0 20px rgba(255, 140, 0, 0.7);
+    }
+  }
+
+  .countdown-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .countdown-label {
+    font-size: 0.9rem;
+    color: rgba(255, 165, 0, 0.9);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .countdown-progress {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
   }
 
   .metronome-container.stuck .beat-dot {
