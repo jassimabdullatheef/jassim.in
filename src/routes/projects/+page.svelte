@@ -1,5 +1,6 @@
 <script>
   import calendarPlusIcon from "$lib/icons/calendar-plus.svelte";
+  import clockStopwatchIcon from "$lib/icons/clock-stopwatch.svelte";
 </script>
 
 <svelte:head>
@@ -24,6 +25,19 @@
           Tool to plan and create daily schedule by organizing tasks into time
           blocks. Drag and drop tasks onto a timeline, set durations, and build
           your day visually with an intuitive interface.
+        </p>
+      </a>
+
+      <a href="/projects/scale_pro" class="project-card">
+        <div class="project-header">
+          <span class="project-icon">
+            <svelte:component this={clockStopwatchIcon} />
+          </span>
+          <h2 class="project-name">Scale Pro</h2>
+        </div>
+        <p class="project-description content">
+          A tool for music students to learn and practice scales and modes.
+          Comes with a progressive metronome with customizable settings.
         </p>
       </a>
     </div>

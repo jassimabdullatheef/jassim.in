@@ -1,0 +1,118 @@
+{
+  "keys": [
+    "C",
+    "C#",
+    "Db",
+    "D",
+    "D#",
+    "Eb",
+    "E",
+    "F",
+    "F#",
+    "Gb",
+    "G",
+    "G#",
+    "Ab",
+    "A",
+    "A#",
+    "Bb",
+    "B"
+  ],
+  "scales": [
+    {
+      "name": "Ionian",
+      "alternateNames": ["Major"],
+      "intervals": ["W", "W", "H", "W", "W", "W", "H"],
+      "description": "Bright, happy, stable"
+    },
+    {
+      "name": "Dorian",
+      "alternateNames": [],
+      "intervals": ["W", "H", "W", "W", "W", "H", "W"],
+      "description": "Minor scale with raised 6th - minor but with a brighter quality"
+    },
+    {
+      "name": "Phrygian",
+      "alternateNames": [],
+      "intervals": ["H", "W", "W", "W", "H", "W", "W"],
+      "description": "Minor scale with lowered 2nd - dark, exotic, Spanish"
+    },
+    {
+      "name": "Lydian",
+      "alternateNames": [],
+      "intervals": ["W", "W", "W", "H", "W", "W", "H"],
+      "description": "Major scale with raised 4th - bright, dreamy, floating"
+    },
+    {
+      "name": "Mixolydian",
+      "alternateNames": [],
+      "intervals": ["W", "W", "H", "W", "W", "H", "W"],
+      "description": "Major scale with lowered 7th - major but with a bluesy quality"
+    },
+    {
+      "name": "Aeolian",
+      "alternateNames": ["Natural Minor"],
+      "intervals": ["W", "H", "W", "W", "H", "W", "W"],
+      "description": "Natural minor scale - sad, melancholic, dark"
+    },
+    {
+      "name": "Locrian",
+      "alternateNames": [],
+      "intervals": ["H", "W", "W", "H", "W", "W", "W"],
+      "description": "Diminished scale with lowered 2nd and 5th - unstable, tense, rarely used"
+    },
+    {
+      "name": "Harmonic Minor",
+      "alternateNames": [],
+      "intervals": ["W", "H", "W", "W", "H", "W+H", "H"],
+      "description": "Minor scale with raised 7th"
+    },
+    {
+      "name": "Melodic Minor",
+      "alternateNames": [],
+      "intervals": ["W", "H", "W", "W", "W", "W", "H"],
+      "description": "Minor scale with raised 6th and 7th ascending"
+    },
+    {
+      "name": "Pentatonic Major",
+      "alternateNames": [],
+      "intervals": ["W", "W", "W+H", "W", "W+H"],
+      "description": "Five-note major scale"
+    },
+    {
+      "name": "Pentatonic Minor",
+      "alternateNames": [],
+      "intervals": ["W+H", "W", "W", "W+H", "W"],
+      "description": "Five-note minor scale"
+    },
+    {
+      "name": "Blues",
+      "alternateNames": [],
+      "intervals": ["W+H", "W", "H", "H", "W+H", "W"],
+      "description": "Pentatonic minor with added blue note"
+    },
+    {
+      "name": "Whole Tone",
+      "alternateNames": [],
+      "intervals": ["W", "W", "W", "W", "W", "W"],
+      "description": "All whole steps"
+    },
+    {
+      "name": "Diminished",
+      "alternateNames": [],
+      "intervals": ["W", "H", "W", "H", "W", "H", "W", "H"],
+      "description": "Alternating whole and half steps"
+    },
+    {
+      "name": "Chromatic",
+      "alternateNames": [],
+      "intervals": ["H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H", "H"],
+      "description": "All 12 semitones"
+    }
+  ],
+  "intervalTypes": {
+    "H": "Half step (semitone)",
+    "W": "Whole step (tone)",
+    "W+H": "Minor third (3 semitones)"
+  }
+}
