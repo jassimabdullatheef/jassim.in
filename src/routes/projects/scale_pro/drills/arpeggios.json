@@ -1,0 +1,153 @@
+[
+  {
+    "id": "arp-triad-1oct",
+    "name": "Triad Arpeggio (1 Octave)",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Basic triad arpeggio ascending and descending through one octave. Foundation for all arpeggio practice.",
+    "pattern": [0, 2, 4, 7, 4, 2, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-triad-2oct",
+    "name": "Triad Arpeggio (2 Octaves)",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Extended triad arpeggio spanning two octaves. Develops fluency and hand position shifts.",
+    "pattern": [0, 2, 4, 7, 9, 11, 14, 11, 9, 7, 4, 2, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-7th-1oct",
+    "name": "7th Chord Arpeggio (1 Octave)",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Four-note arpeggio including the 7th. Essential for jazz and classical repertoire.",
+    "pattern": [0, 2, 4, 6, 7, 6, 4, 2, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-7th-2oct",
+    "name": "7th Chord Arpeggio (2 Octaves)",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Extended 7th chord arpeggio spanning two octaves. Builds advanced finger independence.",
+    "pattern": [0, 2, 4, 6, 7, 9, 11, 13, 14, 13, 11, 9, 7, 6, 4, 2, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-alberti",
+    "name": "Alberti Bass Pattern",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Classic broken chord accompaniment pattern (low-high-mid-high). Used extensively in Classical era music.",
+    "pattern": [0, 4, 2, 4, 0, 4, 2, 4],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-broken-chord",
+    "name": "Broken Chord (Up-Down)",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Simple broken chord pattern alternating between root position notes.",
+    "pattern": [0, 2, 4, 2, 0, 2, 4, 2],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-rolled",
+    "name": "Rolled Chord Pattern",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Quick ascending arpeggio pattern simulating a rolled chord. Great for developing speed.",
+    "pattern": [0, 2, 4, 7, 0, 2, 4, 7],
+    "duration": 16,
+    "hands": "both"
+  },
+  {
+    "id": "arp-waltz",
+    "name": "Waltz Arpeggio Pattern",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "3/4 time arpeggio pattern commonly used in waltzes. Bass note followed by chord tones.",
+    "pattern": [0, 2, 4, 2, 4, 2],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-spread",
+    "name": "Spread Voicing Arpeggio",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Wide interval arpeggio using spread voicing. Develops stretch and smooth hand movement.",
+    "pattern": [0, 4, 7, 9, 7, 4, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-ninth",
+    "name": "9th Chord Arpeggio",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Extended arpeggio including the 9th. Common in jazz and contemporary styles.",
+    "pattern": [0, 2, 4, 6, 8, 6, 4, 2, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-sus4",
+    "name": "Suspended 4th Arpeggio",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Arpeggio using root, 4th, and 5th. Creates a suspended, unresolved sound.",
+    "pattern": [0, 3, 4, 7, 4, 3, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-add9",
+    "name": "Add9 Arpeggio",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Triad with added 9th. Popular in pop and contemporary music.",
+    "pattern": [0, 2, 4, 8, 4, 2, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-octave-leap",
+    "name": "Octave Leap Arpeggio",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Arpeggio with octave leaps between notes. Develops accuracy in large jumps.",
+    "pattern": [0, 7, 2, 9, 4, 11, 7, 0],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-triplet",
+    "name": "Triplet Arpeggio Pattern",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Arpeggio in triplet groupings. Essential for developing rhythmic flexibility.",
+    "pattern": [0, 2, 4, 2, 4, 7, 4, 7, 9, 7, 4, 2],
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "arp-diminished",
+    "name": "Diminished 7th Arpeggio",
+    "category": "arpeggios",
+    "type": "arpeggio",
+    "description": "Symmetrical diminished 7th arpeggio. Each note is a minor 3rd apart.",
+    "pattern": [0, 2, 4, 6, 7, 6, 4, 2, 0],
+    "duration": 8,
+    "hands": "both"
+  }
+]
+

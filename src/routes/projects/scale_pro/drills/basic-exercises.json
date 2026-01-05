@@ -1,0 +1,203 @@
+[
+  {
+    "id": "hanon-1",
+    "name": "Hanon No. 1",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 3, 4, 5, 4, 3, 2],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-2",
+    "name": "Hanon No. 2",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 5, 4, 3, 4, 3, 2],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-3",
+    "name": "Hanon No. 3",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 5, 4, 3, 2, 3, 4],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-4",
+    "name": "Hanon No. 4",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 1, 0, 2, 5, 4, 3, 2],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-5",
+    "name": "Hanon No. 5",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 5, 4, 5, 3, 4, 2, 3],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-6",
+    "name": "Hanon No. 6",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 5, 4, 5, 3, 5, 2, 5],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-7",
+    "name": "Hanon No. 7",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 1, 3, 2, 4, 3, 2],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-8",
+    "name": "Hanon No. 8",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 4, 5, 3, 4, 2, 3],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-9",
+    "name": "Hanon No. 9",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 3, 2, 4, 3, 5, 4],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-10",
+    "name": "Hanon No. 10",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 5, 4, 3, 2, 3, 2, 3],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-11",
+    "name": "Hanon No. 11",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 5, 4, 5, 4, 3, 4],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-12",
+    "name": "Hanon No. 12",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [5, 0, 2, 1, 0, 1, 2, 0],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both",
+    "reverse": true
+  },
+  {
+    "id": "hanon-13",
+    "name": "Hanon No. 13",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [2, 0, 3, 1, 4, 2, 3, 4],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-14",
+    "name": "Hanon No. 14",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 1, 3, 2, 3, 2, 4, 3],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-15",
+    "name": "Hanon No. 15",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 1, 3, 2, 4, 3, 5],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-16",
+    "name": "Hanon No. 16",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 1, 2, 5, 4, 3, 4],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-17",
+    "name": "Hanon No. 17",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 5, 4, 6, 5, 4, 5],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-18",
+    "name": "Hanon No. 18",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 1, 3, 2, 4, 3, 1, 2],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-19",
+    "name": "Hanon No. 19",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 5, 3, 4, 5, 3, 2, 4],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  },
+  {
+    "id": "hanon-20",
+    "name": "Hanon No. 20",
+    "category": "basic-exercises",
+    "type": "hanon-style",
+    "pattern": [0, 2, 5, 7, 5, 4, 5, 3],
+    "repeats": 8,
+    "duration": 8,
+    "hands": "both"
+  }
+]

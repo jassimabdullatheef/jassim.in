@@ -1,0 +1,390 @@
+[
+  {
+    "id": "prog-pop",
+    "name": "I – V – vi – IV (Pop Progression)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "The most popular progression in modern pop music. Used in thousands of hit songs.",
+    "numerals": ["I", "V", "vi", "IV"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-50s",
+    "name": "I – vi – IV – V (50s / Doo-Wop)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Classic 1950s progression heard in countless doo-wop and early rock songs.",
+    "numerals": ["I", "vi", "IV", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-jazz-251",
+    "name": "ii – V – I (Jazz)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "The most fundamental jazz progression. Essential for jazz improvisation and harmony.",
+    "numerals": ["ii", "V", "I"],
+    "chords": [
+      { "numeral": "ii", "quality": "minor", "bass": [2], "voicing": [2, 5, 9] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-blues",
+    "name": "I – IV – V – I (Blues / Folk)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "The foundation of blues, rock, and folk music. Simple but powerful.",
+    "numerals": ["I", "IV", "V", "I"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-emotional",
+    "name": "vi – IV – I – V (Emotional / Cinematic)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Creates an emotional, dramatic feel. Popular in film scores and power ballads.",
+    "numerals": ["vi", "IV", "I", "V"],
+    "chords": [
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-ballad",
+    "name": "I – iii – vi – IV (Pop Ballad)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Smooth progression with a descending bass line. Perfect for ballads.",
+    "numerals": ["I", "iii", "vi", "IV"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "iii", "quality": "minor", "bass": [4], "voicing": [4, 7, 11] },
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-minor",
+    "name": "i – VI – III – VII (Minor Progression)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Dramatic minor key progression. Creates tension and intensity.",
+    "numerals": ["i", "VI", "III", "VII"],
+    "chords": [
+      { "numeral": "i", "quality": "minor", "bass": [0], "voicing": [0, 3, 7] },
+      { "numeral": "VI", "quality": "major", "bass": [8], "voicing": [8, 12, 15] },
+      { "numeral": "III", "quality": "major", "bass": [3], "voicing": [3, 7, 10] },
+      { "numeral": "VII", "quality": "major", "bass": [10], "voicing": [10, 14, 17] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-rock-anthem",
+    "name": "I – V – IV – V (Rock Anthem)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Classic rock progression with a driving feel. Used in countless rock anthems.",
+    "numerals": ["I", "V", "IV", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-turnaround",
+    "name": "I – vi – ii – V (Jazz Turnaround)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Classic jazz turnaround. The basis of rhythm changes and countless standards.",
+    "numerals": ["I", "vi", "ii", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] },
+      { "numeral": "ii", "quality": "minor", "bass": [2], "voicing": [2, 5, 9] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-mixolydian",
+    "name": "I – ♭VII – IV (Mixolydian / Classic Rock)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Iconic rock sound using the flat 7th. Think Sweet Home Alabama, Hey Jude.",
+    "numerals": ["I", "♭VII", "IV"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "♭VII", "quality": "major", "bass": [10], "voicing": [10, 14, 17] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-andalusian",
+    "name": "i – VII – VI – V (Andalusian Cadence)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Spanish/Flamenco flavored progression. Descending bass line creates dramatic tension.",
+    "numerals": ["i", "VII", "VI", "V"],
+    "chords": [
+      { "numeral": "i", "quality": "minor", "bass": [0], "voicing": [0, 3, 7] },
+      { "numeral": "VII", "quality": "major", "bass": [10], "voicing": [10, 14, 17] },
+      { "numeral": "VI", "quality": "major", "bass": [8], "voicing": [8, 12, 15] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-three-chord",
+    "name": "I – IV – V (Three Chord Wonder)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "The simplest and most versatile progression. Foundation of rock, country, and punk.",
+    "numerals": ["I", "IV", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-pachelbel",
+    "name": "I – V – vi – iii – IV – I – IV – V (Canon)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "The famous Pachelbel Canon progression. Used in countless pop and classical pieces.",
+    "numerals": ["I", "V", "vi", "iii", "IV", "I", "IV", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] },
+      { "numeral": "iii", "quality": "minor", "bass": [4], "voicing": [4, 7, 11] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 1
+  },
+  {
+    "id": "prog-minor-blues",
+    "name": "i – iv – V (Minor Blues)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Classic minor key blues progression. Dark, soulful, and expressive.",
+    "numerals": ["i", "iv", "V"],
+    "chords": [
+      { "numeral": "i", "quality": "minor", "bass": [0], "voicing": [0, 3, 7] },
+      { "numeral": "iv", "quality": "minor", "bass": [5], "voicing": [5, 8, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-country",
+    "name": "I – IV – I – V (Country / Cowboy)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Classic country and western progression. Simple and authentic.",
+    "numerals": ["I", "IV", "I", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-sensitive",
+    "name": "IV – V – iii – vi (Sensitive / K-Pop)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Popular in K-pop and J-pop. Creates a yearning, emotional quality.",
+    "numerals": ["IV", "V", "iii", "vi"],
+    "chords": [
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "iii", "quality": "minor", "bass": [4], "voicing": [4, 7, 11] },
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-royal-road",
+    "name": "IV – V – I – I (Royal Road / Anime)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Common in Japanese pop and anime music. Creates an uplifting, hopeful feel.",
+    "numerals": ["IV", "V", "I", "I"],
+    "chords": [
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-grunge",
+    "name": "I – ♭III – ♭VII – IV (Grunge / Alternative)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Borrowed chords create a darker sound. Popular in 90s grunge and alternative rock.",
+    "numerals": ["I", "♭III", "♭VII", "IV"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "♭III", "quality": "major", "bass": [3], "voicing": [3, 7, 10] },
+      { "numeral": "♭VII", "quality": "major", "bass": [10], "voicing": [10, 14, 17] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-descending",
+    "name": "I – V/7 – vi – V (Descending Bass)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Beautiful descending bass line from I to V. Elegant and timeless.",
+    "numerals": ["I", "V/7", "vi", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V/7", "quality": "major", "bass": [11], "voicing": [7, 11, 14] },
+      { "numeral": "vi", "quality": "minor", "bass": [9], "voicing": [9, 12, 16] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-motown",
+    "name": "I – I – IV – iv (Motown / Soul)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Classic Motown sound with the minor iv chord. Soulful and sophisticated.",
+    "numerals": ["I", "I", "IV", "iv"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "iv", "quality": "minor", "bass": [5], "voicing": [5, 8, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-epic",
+    "name": "i – III – VII – IV (Epic / Trailer)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Powerful and cinematic. Common in movie trailers and epic music.",
+    "numerals": ["i", "III", "VII", "IV"],
+    "chords": [
+      { "numeral": "i", "quality": "minor", "bass": [0], "voicing": [0, 3, 7] },
+      { "numeral": "III", "quality": "major", "bass": [3], "voicing": [3, 7, 10] },
+      { "numeral": "VII", "quality": "major", "bass": [10], "voicing": [10, 14, 17] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-dorian",
+    "name": "i – IV – i – IV (Dorian Vamp)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Two-chord Dorian vamp with major IV. Common in funk, R&B, and jazz fusion.",
+    "numerals": ["i", "IV", "i", "IV"],
+    "chords": [
+      { "numeral": "i", "quality": "minor", "bass": [0], "voicing": [0, 3, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "i", "quality": "minor", "bass": [0], "voicing": [0, 3, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-creep",
+    "name": "I – III – IV – iv (The Creep)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Famous from Radiohead's Creep. The III and minor iv create unique tension.",
+    "numerals": ["I", "III", "IV", "iv"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "III", "quality": "major", "bass": [4], "voicing": [4, 8, 11] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "iv", "quality": "minor", "bass": [5], "voicing": [5, 8, 12] }
+    ],
+    "duration": 4,
+    "repeats": 2
+  },
+  {
+    "id": "prog-12bar-short",
+    "name": "I – I – IV – I – V – IV – I – V (12-Bar Blues Short)",
+    "category": "chord-progressions",
+    "type": "chord-progression",
+    "description": "Condensed 12-bar blues pattern. The foundation of blues, rock, and R&B.",
+    "numerals": ["I", "I", "IV", "I", "V", "IV", "I", "V"],
+    "chords": [
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] },
+      { "numeral": "IV", "quality": "major", "bass": [5], "voicing": [5, 9, 12] },
+      { "numeral": "I", "quality": "major", "bass": [0], "voicing": [0, 4, 7] },
+      { "numeral": "V", "quality": "major", "bass": [7], "voicing": [7, 11, 14] }
+    ],
+    "duration": 4,
+    "repeats": 1
+  }
+]

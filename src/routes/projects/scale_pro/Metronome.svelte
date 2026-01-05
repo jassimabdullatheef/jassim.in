@@ -1,10 +1,9 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, createEventDispatcher } from "svelte";
   import Button from "$lib/components/Button.svelte";
-
   import SettingsIcon from "$lib/icons/settings.svelte";
-  import PlayIcon from "$lib/icons/play.svelte";
-  import StopIcon from "$lib/icons/stop.svelte";
+  
+  const dispatch = createEventDispatcher();
 
   export let bpm = 120;
   export let timeSignature = { numerator: 4, denominator: 4 };
@@ -23,6 +22,14 @@
 
   let isPlaying = false;
   let isCountdown = false;
+  
+  // Expose toggle function for external control
+  export function toggle() {
+    toggleMetronome();
+  }
+  
+  // Dispatch state changes
+  $: dispatch('state-change', { isPlaying, isCountdown });
   let beatCount = 0;
   let barCount = 0;
   let currentSpeedIndex = 0;
@@ -48,20 +55,33 @@
     // @ts-ignore - webkitAudioContext is a legacy API
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-    // Store initial position
-    if (containerElement) {
-      initialTop =
-        containerElement.getBoundingClientRect().top + window.scrollY;
-    }
+    // Store initial position - this is the element's position from the top of the document
+    const updateInitialTop = () => {
+      if (containerElement && !isStuck) {
+        initialTop = containerElement.getBoundingClientRect().top + window.scrollY;
+      }
+    };
+    updateInitialTop();
 
     // Use scroll listener to detect when sticky element is stuck
+    // We use initialTop (the element's original position) instead of checking rect.top === 0
+    // This prevents a feedback loop where height changes from the stuck class cause scroll position shifts
     const handleScroll = () => {
-      if (containerElement) {
-        const rect = containerElement.getBoundingClientRect();
-        // Element is stuck when it's positioned at the top (sticky is engaged)
-        // This happens when the element's top is at 0 and we've scrolled past its original position
+      // Recalculate initialTop if it hasn't been set yet (in case layout wasn't ready on mount)
+      if (initialTop === 0 && containerElement) {
+        updateInitialTop();
+      }
+      
+      if (initialTop > 0) {
         const scrollY = window.scrollY || window.pageYOffset;
-        isStuck = rect.top === 0 && scrollY > 0;
+        // Use a small threshold (5px) to add hysteresis and prevent oscillation at the boundary
+        if (isStuck) {
+          // To "unstick", require scrolling back above the original position minus threshold
+          isStuck = scrollY >= initialTop - 5;
+        } else {
+          // To "stick", require scrolling past the original position
+          isStuck = scrollY >= initialTop;
+        }
       }
     };
 
@@ -417,7 +437,8 @@
 
 <div
   class="metronome-container"
-  class:stuck={isStuck}
+  class:playing={isPlaying || isCountdown}
+  class:stuck={isStuck && (isPlaying || isCountdown)}
   bind:this={containerElement}
 >
   <div class="metronome-content">
@@ -460,22 +481,13 @@
             {timeSignature.numerator}/{timeSignature.denominator}
           </div>
         </div>
-        <div>
+        {#if showSettingsButton}
           <div class="controls">
-            {#if showSettingsButton}
-              <Button onClick={onSettingsClick} variant="default">
-                <span style="width: 1em;"><SettingsIcon /></span>
-              </Button>
-            {/if}
-            <Button
-              onClick={toggleMetronome}
-              variant={isPlaying || isCountdown ? "danger" : "primary"}
-              icon={isPlaying || isCountdown ? StopIcon : PlayIcon}
-            >
-              {isPlaying || isCountdown ? "Stop" : "Play"}
+            <Button onClick={onSettingsClick} variant="default">
+              <span style="width: 1em;"><SettingsIcon /></span>
             </Button>
           </div>
-        </div>
+        {/if}
       </div>
 
       {#if speedProgression.enabled}
@@ -520,19 +532,22 @@
     border: 1px solid rgba(119, 210, 255, 0.3);
     border-radius: 12px;
     animation: pulse 2s ease-in-out infinite;
-    transition: all 0.3s ease;
-    position: sticky;
-    top: 0;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
+    // Not sticky by default - only sticky when playing
     z-index: 10;
 
+    // Only make sticky when playing
+    &.playing {
+      position: sticky;
+      top: 0;
+    }
+
+    // When stuck (and playing), only change visual properties - NO layout changes to prevent scroll jank
     &.stuck {
-      padding: 0.75rem 2rem;
       border-radius: 0 0 12px 12px;
-      background: rgba(39, 45, 48);
-      border-left: none;
-      border-right: none;
-      border-top: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      background: rgba(39, 45, 48, 0.98);
+      border-color: rgba(119, 210, 255, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       animation: none;
     }
   }
@@ -561,11 +576,6 @@
     color: rgba(255, 255, 255, 0.95);
     line-height: 1;
     text-shadow: 0 0 20px rgba(119, 210, 255, 0.3);
-    transition: font-size 0.3s ease;
-  }
-
-  .metronome-container.stuck .bpm-value {
-    font-size: 2rem;
   }
 
   .bpm-label {
@@ -573,11 +583,6 @@
     color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    transition: font-size 0.3s ease;
-  }
-
-  .metronome-container.stuck .bpm-label {
-    font-size: 0.75rem;
   }
 
   .time-signature-display {
@@ -590,15 +595,6 @@
     border-radius: 12px;
     max-width: 50%;
     margin: 0 auto;
-    transition:
-      font-size 0.3s ease,
-      padding 0.3s ease;
-  }
-
-  .metronome-container.stuck .time-signature-display {
-    font-size: 0.65rem;
-    padding: 0.25rem 0.75rem;
-    max-width: 100%;
   }
 
   .beat-indicator {
@@ -606,14 +602,6 @@
     justify-content: center;
     gap: 1rem;
     margin-bottom: 1rem;
-    transition:
-      gap 0.3s ease,
-      margin-bottom 0.3s ease;
-  }
-
-  .metronome-container.stuck .beat-indicator {
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
   }
 
   .beat-dot {
@@ -672,12 +660,6 @@
     font-weight: 500;
   }
 
-  .metronome-container.stuck .beat-dot {
-    width: 10px;
-    height: 10px;
-    border-width: 1px;
-  }
-
   .controls {
     display: flex;
     gap: 1rem;
@@ -691,16 +673,6 @@
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
-    transition:
-      opacity 0.3s ease,
-      max-height 0.3s ease;
-    overflow: hidden;
-  }
-
-  .metronome-container.stuck .speed-progression-indicator {
-    max-height: 0;
-    margin-top: 0;
-    opacity: 0;
   }
 
   @keyframes pulse {

@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import scalesData from "./scales.json";
-  import PractiveDrills from "./PractiveDrills.svelte";
   import ChevronRightIcon from "$lib/icons/chevron-right.svelte";
 
   const STORAGE_KEY = "scale-progress";
@@ -12,6 +11,8 @@
 
   /** @type {{ [key: string]: boolean }} */
   export let completionData = {};
+  export let chordProgressionMode = false;
+  
   let viewMode = "by-key"; // 'by-key' or 'by-scale'
   let stats = { completed: 0, total: 0, percentage: 0 };
   /** @type {string | null} */
@@ -19,6 +20,17 @@
   /** @type {{ name: string; alternateNames: string[]; intervals: string[]; description: string } | null} */
   let selectedScale =
     scalesData.scales.find((s) => s.name === "Ionian") || null;
+  
+  // Get the Chromatic scale
+  const chromaticScale = scalesData.scales.find((s) => s.name === "Chromatic");
+  
+  // When chord progression mode is enabled, auto-select Chromatic
+  $: if (chordProgressionMode && chromaticScale && selectedScale?.name !== "Chromatic") {
+    selectedScale = chromaticScale;
+    if (selectedKey) {
+      dispatch("scale-selected", { key: selectedKey, scale: selectedScale });
+    }
+  }
 
   /** @type {{ [key: string]: boolean }} */
   let expandedKeys = {};
@@ -260,12 +272,16 @@
                 {@const isChecked = completionData[completionKey] === true}
                 {@const isSelected =
                   selectedKey === key && selectedScale?.name === scale.name}
+                {@const isDisabled = chordProgressionMode && scale.name !== "Chromatic"}
                 <button
                   type="button"
                   class="scale-item"
                   class:completed={isChecked}
                   class:selected={isSelected}
-                  on:click|stopPropagation={() => selectScale(key, scale.name)}
+                  class:disabled={isDisabled}
+                  disabled={isDisabled}
+                  on:click|stopPropagation={() => !isDisabled && selectScale(key, scale.name)}
+                  title={isDisabled ? "Only Chromatic scale is available in Chord Progression mode" : ""}
                 >
                   <span class="scale-name">{scale.name}</span>
                   {#if scale.alternateNames.length > 0}
@@ -279,7 +295,6 @@
                 </button>
               {/each}
             </div>
-            <PractiveDrills {selectedKey} {selectedScale} />
           {/if}
         </div>
       {/each}
@@ -300,12 +315,16 @@
           };
         })()}
         {@const isExpanded = expandedScales[scale.name] === true}
-        <div class="scale-section">
+        {@const isScaleDisabled = chordProgressionMode && scale.name !== "Chromatic"}
+        <div class="scale-section" class:disabled={isScaleDisabled}>
           <button
             type="button"
             class="scale-header"
             class:expanded={isExpanded}
-            on:click={() => toggleScaleExpanded(scale.name)}
+            class:disabled={isScaleDisabled}
+            disabled={isScaleDisabled}
+            on:click={() => !isScaleDisabled && toggleScaleExpanded(scale.name)}
+            title={isScaleDisabled ? "Only Chromatic scale is available in Chord Progression mode" : ""}
           >
             <span class="chevron-icon">
               <ChevronRightIcon />
@@ -330,7 +349,7 @@
               >
             </div>
           </button>
-          {#if isExpanded}
+          {#if isExpanded && !isScaleDisabled}
             <div class="scale-content">
               <p class="scale-description">{scale.description}</p>
               <div class="keys-grid">
@@ -354,7 +373,6 @@
                   </button>
                 {/each}
               </div>
-              <PractiveDrills {selectedKey} {selectedScale} />
             </div>
           {/if}
         </div>
@@ -589,6 +607,17 @@
       border-color: rgba(253, 231, 45, 0.4);
       box-shadow: 0 0 0 2px rgba(253, 231, 45, 0.2);
     }
+
+    &.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+    }
   }
 
   .checkmark {
@@ -619,6 +648,10 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 1.5rem;
+
+    &.disabled {
+      opacity: 0.4;
+    }
   }
 
   .scale-header {
@@ -646,6 +679,14 @@
 
       .chevron-icon {
         transform: rotate(90deg);
+      }
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      
+      &:hover {
+        opacity: 1;
       }
     }
 

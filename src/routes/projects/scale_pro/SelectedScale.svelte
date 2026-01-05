@@ -1,6 +1,7 @@
 <script>
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher, onMount, onDestroy } from "svelte";
   import Button from "$lib/components/Button.svelte";
+  import { pianoSampler } from "./PianoSampler.js";
 
   import CheckIcon from "$lib/icons/check.svelte";
   import SquareIcon from "$lib/icons/square.svelte";
@@ -13,6 +14,82 @@
   export let isCompleted = false;
 
   const dispatch = createEventDispatcher();
+
+  // Piano sampler state
+  let samplerLoaded = false;
+  let samplerLoading = false;
+  /** @type {Set<string>} */
+  let pressedKeys = new Set();
+
+  onMount(async () => {
+    // Initialize piano sampler
+    if (!pianoSampler.isLoaded && !pianoSampler.isLoading) {
+      samplerLoading = true;
+      await pianoSampler.init();
+      samplerLoaded = pianoSampler.isLoaded;
+      samplerLoading = false;
+    } else if (pianoSampler.isLoaded) {
+      samplerLoaded = true;
+    } else {
+      samplerLoading = true;
+      samplerLoaded = await pianoSampler.whenLoaded();
+      samplerLoading = false;
+    }
+  });
+
+  onDestroy(() => {
+    // Stop all playing notes when component is destroyed
+    pianoSampler.stopAll();
+  });
+
+  /**
+   * Play a piano key
+   * @param {string} note
+   * @param {number} octave
+   */
+  function handleKeyDown(note, octave) {
+    if (!samplerLoaded) return;
+    
+    const keyId = `${note}${octave}`;
+    if (pressedKeys.has(keyId)) return;
+    
+    pressedKeys.add(keyId);
+    pressedKeys = new Set(pressedKeys); // Trigger reactivity
+    
+    pianoSampler.playNote(note, octave, 0.8, 0); // 0 duration = sustained
+  }
+
+  /**
+   * Stop a piano key
+   * @param {string} note
+   * @param {number} octave
+   */
+  function handleKeyUp(note, octave) {
+    const keyId = `${note}${octave}`;
+    if (!pressedKeys.has(keyId)) return;
+    
+    pressedKeys.delete(keyId);
+    pressedKeys = new Set(pressedKeys); // Trigger reactivity
+    
+    pianoSampler.stopNote(note, octave);
+  }
+
+  /**
+   * Check if a key is currently pressed
+   * @param {string} note
+   * @param {number} octave
+   */
+  function isKeyPressed(note, octave) {
+    return pressedKeys.has(`${note}${octave}`);
+  }
+
+  /**
+   * Get the octave for a key position (2 octaves starting from C3)
+   * @param {number} position
+   */
+  function getOctaveForPosition(position) {
+    return position < 7 ? 3 : 4;
+  }
 
   /**
    * @param {string} key
@@ -261,31 +338,53 @@
       </div>
 
       <div class="piano-section">
+        {#if samplerLoading}
+          <div class="sampler-loading">
+            <span class="loading-indicator"></span>
+            <span>Loading piano samples...</span>
+          </div>
+        {/if}
         {#if pianoKeys}
-          <div class="piano-keyboard">
+          <div class="piano-keyboard" class:loading={samplerLoading}>
             {#each pianoKeys.whiteKeys as keyItem (keyItem.note + keyItem.position)}
+              {@const octave = getOctaveForPosition(keyItem.position)}
+              {@const isPressed = isKeyPressed(keyItem.note, octave)}
               <button
                 type="button"
                 class="piano-key white"
                 class:active={keyItem.isInScale}
+                class:pressed={isPressed}
                 aria-label={keyItem.note}
                 title={keyItem.isInScale
-                  ? `${keyItem.note} is in scale`
-                  : `${keyItem.note} is not in scale`}
+                  ? `${keyItem.note} is in scale (click to play)`
+                  : `${keyItem.note} (click to play)`}
+                on:mousedown={() => handleKeyDown(keyItem.note, octave)}
+                on:mouseup={() => handleKeyUp(keyItem.note, octave)}
+                on:mouseleave={() => handleKeyUp(keyItem.note, octave)}
+                on:touchstart|preventDefault={() => handleKeyDown(keyItem.note, octave)}
+                on:touchend|preventDefault={() => handleKeyUp(keyItem.note, octave)}
               >
                 <span class="key-label">{keyItem.note}</span>
               </button>
             {/each}
             {#each pianoKeys.blackKeys as keyItem (keyItem.note + keyItem.position)}
+              {@const octave = getOctaveForPosition(keyItem.position)}
+              {@const isPressed = isKeyPressed(keyItem.note, octave)}
               <button
                 type="button"
                 class="piano-key black"
                 class:active={keyItem.isInScale}
+                class:pressed={isPressed}
                 aria-label={keyItem.note}
                 style="left: {keyItem.position * 40 + 26}px;"
                 title={keyItem.isInScale
-                  ? `${keyItem.note} is in scale`
-                  : `${keyItem.note} is not in scale`}
+                  ? `${keyItem.note} is in scale (click to play)`
+                  : `${keyItem.note} (click to play)`}
+                on:mousedown={() => handleKeyDown(keyItem.note, octave)}
+                on:mouseup={() => handleKeyUp(keyItem.note, octave)}
+                on:mouseleave={() => handleKeyUp(keyItem.note, octave)}
+                on:touchstart|preventDefault={() => handleKeyDown(keyItem.note, octave)}
+                on:touchend|preventDefault={() => handleKeyUp(keyItem.note, octave)}
               >
                 <span class="key-label">{keyItem.note}</span>
               </button>
@@ -385,6 +484,32 @@
     }
   }
 
+  .sampler-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+  }
+
+  .loading-indicator {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(119, 210, 255, 0.3);
+    border-top-color: rgba(119, 210, 255, 1);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .notes-list {
     display: flex;
     flex-wrap: wrap;
@@ -414,19 +539,26 @@
     align-items: flex-start;
     width: 564px;
     margin: 0 auto;
+    transition: opacity 0.3s ease;
+
+    &.loading {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
 
   .piano-key {
     position: relative;
     border: none;
-    cursor: default;
-    transition: all 0.2s ease;
+    cursor: pointer;
+    transition: all 0.08s ease;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     padding-bottom: 0.5rem;
     font-family: inherit;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     &.white {
       width: 40px;
@@ -438,12 +570,21 @@
       z-index: 1;
       margin-right: -1px;
       transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        opacity 0.2s ease;
+        background 0.08s ease,
+        border-color 0.08s ease,
+        opacity 0.08s ease,
+        transform 0.08s ease,
+        box-shadow 0.08s ease;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      &:active,
+      &.pressed {
+        background: rgba(119, 210, 255, 0.6) !important;
+        transform: translateY(2px);
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
       }
 
       &.active {
@@ -452,7 +593,14 @@
         opacity: 1 !important;
 
         &:hover {
-          background: #f5f5f5 !important;
+          background: #f0f8ff !important;
+        }
+
+        &:active,
+        &.pressed {
+          background: rgba(119, 210, 255, 0.9) !important;
+          transform: translateY(2px);
+          box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .key-label {
@@ -473,12 +621,21 @@
       position: absolute;
       top: 0;
       transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        opacity 0.2s ease;
+        background 0.08s ease,
+        border-color 0.08s ease,
+        opacity 0.08s ease,
+        transform 0.08s ease,
+        box-shadow 0.08s ease;
 
       &:hover {
-        background: rgba(26, 26, 26, 0.4);
+        background: rgba(40, 40, 40, 0.5);
+      }
+
+      &:active,
+      &.pressed {
+        background: rgba(119, 210, 255, 0.4) !important;
+        transform: translateY(2px);
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
       }
 
       &.active {
@@ -493,6 +650,13 @@
 
         &:hover {
           background: #2a2a2a !important;
+        }
+
+        &:active,
+        &.pressed {
+          background: rgba(119, 210, 255, 0.6) !important;
+          transform: translateY(2px);
+          box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
         }
       }
     }

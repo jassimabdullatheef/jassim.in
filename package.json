@@ -26,6 +26,7 @@
 		"@openai/agents-extensions": "^0.3.4",
 		"@openrouter/ai-sdk-provider": "^1.5.2",
 		"@vercel/analytics": "^1.6.1",
+		"abcjs": "^6.6.0",
 		"ai": "^5.0.108",
 		"bulma": "^1.0.2",
 		"gray-matter": "^4.0.3",

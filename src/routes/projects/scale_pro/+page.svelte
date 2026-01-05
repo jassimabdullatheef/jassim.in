@@ -3,6 +3,7 @@
   import MetronomeDialog from "./MetronomeDialog.svelte";
   import ScalePractice from "./ScalePractice.svelte";
   import SelectedScale from "./SelectedScale.svelte";
+  import DrillNotation from "./DrillNotation.svelte";
   import scalesData from "./scales.json";
   import { onMount } from "svelte";
   import ClockStopwatchIcon from "$lib/icons/clock-stopwatch.svelte";
@@ -20,6 +21,26 @@
     barsPerSpeed: 4,
     endBehavior: "continue",
   };
+  
+  // Metronome state for external control
+  /** @type {import('./Metronome.svelte').default | null} */
+  let metronomeComponent = null;
+  let metronomeIsPlaying = false;
+  let metronomeIsCountdown = false;
+  
+  /**
+   * @param {CustomEvent} event
+   */
+  function handleMetronomeStateChange(event) {
+    metronomeIsPlaying = event.detail.isPlaying;
+    metronomeIsCountdown = event.detail.isCountdown;
+  }
+  
+  function handleTogglePractice() {
+    if (metronomeComponent) {
+      metronomeComponent.toggle();
+    }
+  }
 
   /** @type {string | null} */
   let selectedKey = "C";
@@ -29,6 +50,10 @@
   /** @type {{ [key: string]: boolean }} */
   let completionData = {};
   let viewMode = "by-key"; // Track the current view mode from ScalePractice
+  let drillCategory = "basic-exercises"; // Track the current drill category
+  
+  // Chromatic scale for chord progressions
+  const chromaticScale = scalesData.scales.find((s) => s.name === "Chromatic") || null;
 
   onMount(() => {
     // Ensure C Major is selected on mount
@@ -130,6 +155,19 @@
     viewMode = event.detail.viewMode;
   }
 
+  /**
+   * Handle drill category change
+   * @param {CustomEvent} event
+   */
+  function handleCategoryChange(event) {
+    drillCategory = event.detail.category;
+    
+    // When chord progressions is selected, auto-select Chromatic scale
+    if (drillCategory === 'chord-progressions' && chromaticScale) {
+      selectedScale = chromaticScale;
+    }
+  }
+
   function handleNext() {
     if (!selectedKey || !selectedScale) return;
 
@@ -220,7 +258,22 @@
     on:toggle-completion={handleToggleCompletion}
     on:next={handleNext}
   />
+  
+  <DrillNotation 
+    {selectedKey} 
+    {selectedScale} 
+    {bpm}
+    {timeSignature}
+    {speedProgression}
+    {soundType}
+    isPracticing={metronomeIsPlaying}
+    isCountdown={metronomeIsCountdown}
+    on:toggle-practice={handleTogglePractice}
+    on:category-change={handleCategoryChange}
+  />
+  
   <Metronome
+    bind:this={metronomeComponent}
     {bpm}
     {timeSignature}
     {soundType}
@@ -228,11 +281,13 @@
     {speedProgression}
     showSettingsButton={true}
     onSettingsClick={() => (showDialog = true)}
+    on:state-change={handleMetronomeStateChange}
   />
 
   <div class="scales-section">
     <ScalePractice
       {completionData}
+      chordProgressionMode={drillCategory === 'chord-progressions'}
       on:scale-selected={handleScaleSelected}
       on:view-mode-change={handleViewModeChange}
     />

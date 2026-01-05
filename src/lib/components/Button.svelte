@@ -205,5 +205,10 @@
         min-width: 1em;
       }
     }
+
+    :global(svg) {
+      width: 1em !important;
+      height: 1em !important;
+    }
   }
 </style>
