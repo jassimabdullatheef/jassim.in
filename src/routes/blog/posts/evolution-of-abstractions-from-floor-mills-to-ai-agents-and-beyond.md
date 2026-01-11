@@ -9,7 +9,7 @@ Humans have been trying to automate tasks for centuries. From the Industrial Rev
 
 Take a fun historical tidbit: the **first significant industrial automation** was an automatic flour mill developed by **Oliver Evans in 1785**.
 
-![First significant industrial automation: Automatic flour mill developed by Oliver Evans in 1785](/src/lib/images/blogs/Oliver_Evans_-_Automated_mill.jpg)
+![First significant industrial automation: Automatic flour mill developed by Oliver Evans in 1785](/images/blogs/Oliver_Evans_-_Automated_mill.jpg)
 
 _Image Source: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Oliver_Evans_-_Automated_mill.jpg)_
 

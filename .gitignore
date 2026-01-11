@@ -22,3 +22,4 @@ vite.config.ts.timestamp-*
 
 # Book source file
 book-list.csv
+goodreads_library_export.csv

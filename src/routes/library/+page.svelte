@@ -162,7 +162,7 @@
         I'm putting it out there for me to keep track as well as for anyone who likes to discover more.
       </p>
       <p class="is-size-6 has-text-grey mt-4">
-        Last updated: 06 Dec 2025
+        Last updated: 11 Jan 2026
       </p>
     </div>
     

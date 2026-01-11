@@ -1,4 +1,4 @@
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 21;
 
 // Import CSV file at build time using Vite's glob import
 // This ensures it's included in the production bundle
