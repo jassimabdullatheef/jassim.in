@@ -1,7 +1,7 @@
 ---
 title: "Evolution of Abstractions: From Flour Mills to AI Agents and Beyond"
 date: 2026-01-11
-excerpt: How social media went from a tool for connection to a force that divides us.
+excerpt: The evolution of technogoly abstractions and thoughts about the newest abstraction layer - Large Language Models.
 category: Technology
 ---
 
@@ -51,11 +51,13 @@ A modern developer trend is **vibe coding [sn: coined by the OG: Karpathy]**:
 
 Think of it as telling your AI co-pilot: _“I want a dreamy, pastel-themed task manager that reminds people to drink water,”_ and watching it spin up working code in minutes. “It’s magical”
 
+Yes, LLM coding is a new abstraction layer. instead of declaring variables and functions, you are declaring your intent and the LLM will generate the code for you. But the when the previous generations of abstractions are transforming the input into a predictable output, there are some gotchas with this new abstraction layer.
+
 ---
 
 ## LLM Limitations: Performance, Reliability, and Compute Demands
 
-For programmers, routine coding is increasingly automated. LLMs enable rapid prototyping (vibe coding) and productivity boosts. Right now, we are in a transitional period of this evolution cycle, and there is a lot of uncertainty, lack of clarity about the profession of software engineering in general. mainly due to the surge of all the Coding agents (Claude, Codex, etc) and how good it has become.
+With LLM, programmers can automate routing coding tasks easily. LLMs enable rapid prototyping (vibe coding) and productivity boosts. Right now, we are in a transitional period of this evolution cycle, and there is a lot of uncertainty, lack of clarity about the profession of software engineering in general. mainly due to the surge of all the Coding agents (Claude, Codex, etc) and how good it has become.
 
 While LLMs are incredibly powerful, they **cannot yet replace all forms of software or knowledge work**, particularly where **determinism, reliability, or high performance** are critical:
 
