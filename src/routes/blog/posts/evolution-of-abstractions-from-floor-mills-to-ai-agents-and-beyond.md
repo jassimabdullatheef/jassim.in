@@ -79,11 +79,11 @@ While LLMs are incredibly powerful, they **cannot yet replace all forms of softw
 
 5. **Context limits and scale**:
 
-   For large scale projects that has hundreds and thousands of lines of codes, The LLM context size limit (the amount of stuff it can keep in memory at a given point of time to generate stuff) is a real bummer. For generating a piece of code within a project this scale, the LLM doesn’t have to hold the whole project in context, but LLM have and wont have any idea on the architecture, the components, how the components interact with each other, internal and external depending factors, and so many and many small and big elements and informations that influence the project, that are not necessarily written down within the code itself. This will lead to duplications of codes, breaking dependancies and test cases.
+   For large scale projects that has hundreds and thousands of lines of codes, The LLM context size limit (the amount of stuff it can keep in memory at a given point of time to generate stuff) is a real bummer. For generating a piece of code within a project this scale, the LLM doesn’t have to hold the whole project in context, but LLM dont have & won't have any idea on the architecture, the components, how the components interact with each other, internal and external depending factors, and so many and many small and big elements and informations that influence the project. Thos are not necessarily written down within the code itself, so the LLM agents can refer it if needed, even if there is a very detailed documentation available explaining every bits of code and logics, we are running into context window limitations pretty quickly. This will lead to duplications of codes, breaking dependancies and test cases and effectively less stable and maintainable codebases.
 
 6. **Mismatching outcome:**
 
-   There are innumerable libraries and packages are available for the common programming languages and each one of them comes with many many versions of them. each one usually (but not necessarily) iterate their API and logics with each version, some functions gets depreciated, some gets added, some gets modified, some the whole library changes (The AngularJS 2.0, I hate you Angular for this). The point is, it has no idea, no idea that these are packages, there are different versions and there are different ways to do as per versions. so we end up with bunch of codes mishmashes from all over the place that at the end does not work. I’m not saying this happens all the time but it definitely happens hell of a lot of times.
+   There are innumerable libraries and packages are available for the common programming languages and each one of them comes with many many versions of them. each one usually (but not necessarily) iterate their API and logics with each version, some functions gets depreciated, some gets added, some gets modified, some the whole library changes [sn: The AngularJS 2.0, I hate you Angular for this]. The point is, it has no idea that these are packages, there are different versions and there are different ways to do as per versions. so we end up with bunch of codes mishmashes from all over the place that at the end does not work. I’m not saying this happens all the time but it definitely happens hell of a lot of times.
 
 ---
 
@@ -119,6 +119,6 @@ So my fellow programmers, As an engineer and someone who leads technical wing of
 
 ---
 
-PS: I wrote this by end of 2025. If you are reading this in 2030 and thinking how stupid this guy is, please don't.
+PS: I wrote this by end of 2025. If you are reading this in 2030 and thinking how stupid this guy is, you are probably right.
 
 ---
