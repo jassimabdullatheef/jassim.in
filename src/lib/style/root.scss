@@ -389,4 +389,10 @@ article {
         margin-bottom: calc(var(--bulma-size-3) * 1);
         line-height: 1.75em;
     }
+
+    li {
+        p {
+            font-size: 1em;
+        }
+    }
 }
