@@ -2,7 +2,7 @@
 title: "How photography teaches us to live better"
 date: 2020-06-19
 excerpt: How learning photography can improve your life.
-category: Photography
+category: Observation
 ---
 
 I’m not a professional photographer—just an enthusiast who enjoys the craft. But even as an amateur, photography has quietly reshaped the way I see the world. What follows are reflections from that perspective.

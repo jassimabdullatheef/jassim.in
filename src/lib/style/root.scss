@@ -167,6 +167,29 @@ p, h1, h2, h3, h4, h5, h6 {
                 }
             }
 
+            .pin-button-wrapper {
+                display: none;
+                padding: var(--bulma-size-6);
+
+                @include mixins.tablet {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                button {
+                    opacity: 0.4;
+                    transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+
+                    &:hover, &.is-active {
+                        opacity: 1;
+                    }
+
+                    &.is-active {
+                        color: var(--color-blue);
+                    }
+                }
+            }
+
             .logo-wrapper {
                 max-width: calc(var(--bulma-size-2) * 1.4);
                 margin-left: calc(var(--bulma-size-7) / 2);
@@ -210,7 +233,7 @@ p, h1, h2, h3, h4, h5, h6 {
             }
         }
 
-        &.expanded {
+        &.expanded, &.pinned {
             @include big-nav;
         }
 

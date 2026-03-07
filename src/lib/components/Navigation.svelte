@@ -11,14 +11,20 @@
   import bookIcon from "$lib/icons/book.svelte";
   import arrowLeftIcon from "$lib/icons/arrow-left.svelte";
   import closeIcon from "$lib/icons/close.svelte";
+  import pinIcon from "$lib/icons/pin.svelte";
 
   import MenuItem from "./MenuItem.svelte";
 
   export let visible = true;
   export let isSmallScreen = false;
+  export let pinned = false;
 
   const closeNavigation = () => {
     visible = !visible;
+  };
+
+  const togglePin = () => {
+    pinned = !pinned;
   };
 
   const navs = [
@@ -32,7 +38,7 @@
   ];
 
   const toggleVisibility = (isVisible = false) => {
-    if (!isSmallScreen) {
+    if (!isSmallScreen && !pinned) {
       visible = isVisible;
     }
   };
@@ -79,7 +85,7 @@
                   visible = true;
                 }}
                 blur={() => {
-                  visible = false;
+                  if (!pinned) visible = false;
                 }}
               />
             </li>
@@ -87,5 +93,17 @@
         </ul>
       </aside>
     </div>
+  </div>
+
+  <div class="column is-12 pin-button-wrapper">
+    <button
+      class="button is-small is-text {pinned ? 'is-active' : ''}"
+      on:click={togglePin}
+      title={pinned ? "Unpin navigation" : "Pin navigation"}
+    >
+      <span class="icon">
+        <svelte:component this={pinIcon} />
+      </span>
+    </button>
   </div>
 </nav>

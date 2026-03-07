@@ -1,5 +1,6 @@
 <script>
   import { navigating } from "$app/stores";
+  import { browser } from "$app/environment";
   import "bulma/css/bulma.css";
   import "$lib/style/root.scss";
 
@@ -15,9 +16,16 @@
 
   $: isSmallScreen = innerWidth < 768;
 
+  let pinned = browser ? localStorage.getItem("nav-pinned") === "true" : false;
+
+  $: if (browser) localStorage.setItem("nav-pinned", String(pinned));
+
+  // When pinned on large screens, keep nav visible
+  $: if (pinned && !isSmallScreen) visible = true;
+
   // On route change
   const onRouteChange = () => {
-    visible = false;
+    if (!pinned || isSmallScreen) visible = false;
   };
 
   $: if ($navigating) onRouteChange();
@@ -36,10 +44,10 @@
   </button>
 {/if}
 <div class="columns mb-0 main-layout">
-  <div class={`column nav-container ${visible ? "expanded" : ""}`}>
-    <Navigation bind:visible bind:isSmallScreen />
+  <div class={`column nav-container ${visible ? "expanded" : ""} ${pinned && !isSmallScreen ? "pinned" : ""}`}>
+    <Navigation bind:visible bind:isSmallScreen bind:pinned />
   </div>
-  <div class={`column content-container ${visible ? "" : "expanded"}`}>
+  <div class={`column content-container ${visible || (pinned && !isSmallScreen) ? "" : "expanded"}`}>
     <div class="container mt-5">
       <PageTransition key={data.url}>
         <slot></slot>

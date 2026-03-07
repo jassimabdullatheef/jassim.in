@@ -2,7 +2,7 @@
 title: "Evolution of Abstractions: From Flour Mills to AI Agents and Beyond"
 date: 2026-01-11
 excerpt: The evolution of technogoly abstractions and thoughts about the newest abstraction layer - Large Language Models.
-category: Technology
+category: AI
 ---
 
 Humans have been trying to automate tasks for centuries. From the Industrial Revolution to the modern AI era, we’ve been inventing clever ways to make machines do what humans used to. Abstraction was one of the factor that accelerated our journey towards the automation.
