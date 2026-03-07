@@ -128,7 +128,6 @@
       padding: 0.2em 0.4em;
       border-radius: 3px;
       font-family: "Courier New", monospace;
-      font-size: 0.9em;
     }
 
     :global(pre) {

@@ -40,6 +40,10 @@ export function loadPosts() {
       // Parse frontmatter and content
       const { data: frontmatter, content: markdownContent } = matter(content);
 
+      if (frontmatter.published === false) {
+        continue;
+      }
+
       posts.push({
         slug,
         frontmatter,

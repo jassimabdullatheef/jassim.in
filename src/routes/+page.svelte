@@ -8,6 +8,21 @@
 
   import svelteLogo from "$lib/icons/svelte.svelte";
   import bulmaLogo from "$lib/icons/bulma.svelte";
+  import aboutIcon from "$lib/icons/person.svelte";
+  import penIcon from "$lib/icons/pen.svelte";
+  import musicIcon from "$lib/icons/music.svelte";
+  import cameraIcon from "$lib/icons/camera.svelte";
+  import projectsIcon from "$lib/icons/projects.svelte";
+  import bookIcon from "$lib/icons/book.svelte";
+
+  const navLinks = [
+    { text: "About", url: "/about", icon: aboutIcon },
+    { text: "Projects", url: "/projects", icon: projectsIcon },
+    { text: "Blog", url: "/blog", icon: penIcon },
+    { text: "Library", url: "/library", icon: bookIcon },
+    { text: "Music", url: "/music", icon: musicIcon },
+    { text: "Photography", url: "/photography", icon: cameraIcon },
+  ];
 
   let ready = false;
   let cursorEl = null;
@@ -124,6 +139,21 @@
     </div>
   </section>
 
+  <section class="block nav-section">
+    <div class="columns is-multiline">
+      {#each navLinks as { text, url, icon }}
+        <div class="column is-4-desktop is-6-tablet is-12-mobile">
+          <a href={url} class="nav-card">
+            <span class="nav-card-icon">
+              <svelte:component this={icon} />
+            </span>
+            <span class="nav-card-label">{text}</span>
+          </a>
+        </div>
+      {/each}
+    </div>
+  </section>
+
   <section class="block">
     <div class="is-flex attributions">
       <div class="is-flex is-align-items-center">
@@ -227,6 +257,49 @@
       width: var(--bulma-size-1);
       min-width: var(--bulma-size-1);
     }
+  }
+
+  .nav-section {
+    padding: 0 1.5rem;
+  }
+
+  .nav-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    background: linear-gradient(160deg, rgb(142 136 156 / 6%), rgb(44 25 113 / 12%));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      background: linear-gradient(160deg, rgb(142 136 156 / 14%), rgb(44 25 113 / 24%));
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      color: inherit;
+    }
+  }
+
+  .nav-card-icon {
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+
+    :global(svg) {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .nav-card-label {
+    font-size: 1.1rem;
+    font-weight: 500;
   }
 
   .cursor {
