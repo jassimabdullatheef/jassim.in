@@ -51,20 +51,11 @@
       <div class="posts-list">
         {#each data.posts as post}
           <article class="post-preview mb-6">
-            <div
-              class="is-flex is-justify-content-space-between is-align-items-start mb-3"
-            >
-              <h2 class="is-size-3 mb-0">
-                <a href="/blog/{post.slug}">
-                  {post.frontmatter.title}
-                </a>
-              </h2>
-              {#if post.frontmatter.category}
-                <span class="tag is-light ml-3">
-                  {post.frontmatter.category}
-                </span>
-              {/if}
-            </div>
+            <h2 class="is-size-3 mb-3">
+              <a href="/blog/{post.slug}">
+                {post.frontmatter.title}
+              </a>
+            </h2>
 
             {#if post.frontmatter.date}
               <p class="is-size-6 has-text-grey mb-3">
@@ -80,6 +71,14 @@
               <p class="is-size-5 content mb-4">
                 {post.excerpt}
               </p>
+            {/if}
+
+            {#if post.frontmatter.category}
+              <div class="tags mb-4">
+                {#each post.frontmatter.category.split(',').map(c => c.trim()) as cat}
+                  <span class="tag is-primary">{cat}</span>
+                {/each}
+              </div>
             {/if}
 
             <Button href="/blog/{post.slug}" icon="→" iconPosition="right">

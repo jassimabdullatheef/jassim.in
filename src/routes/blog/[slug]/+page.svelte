@@ -37,18 +37,17 @@
   <article>
     <Button href="/blog" icon="←" iconPosition="left">Back to Blog</Button>
 
-    <div
-      class="is-flex is-justify-content-space-between is-align-items-start mb-4"
-    >
-      <h1 class="is-size-1-tablet is-size-3-mobile mb-0">
-        {data.post.frontmatter.title}
-      </h1>
-      {#if data.post.frontmatter.category}
-        <span class="tag is-primary ml-3">
-          {data.post.frontmatter.category}
-        </span>
-      {/if}
-    </div>
+    <h1 class="is-size-1-tablet is-size-3-mobile mb-4">
+      {data.post.frontmatter.title}
+    </h1>
+
+    {#if data.post.frontmatter.category}
+      <div class="tags mb-2">
+        {#each data.post.frontmatter.category.split(',').map(c => c.trim()) as cat}
+          <span class="tag is-primary">{cat}</span>
+        {/each}
+      </div>
+    {/if}
 
     {#if data.post.frontmatter.date}
       <p class="is-size-6 has-text-grey mb-5">
