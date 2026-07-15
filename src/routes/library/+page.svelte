@@ -1,14 +1,15 @@
 <script>
-  import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
-  import Button from "$lib/components/Button.svelte";
+  import { onMount } from "svelte";
   import { gsap } from "gsap";
 
   export let data;
 
   let selectedFilter = "all";
   let flippedCards = new Set();
-  let currentPage = 1;
+  let visibleCount = data.itemsPerPage;
+  let sentinel;
+  /** @type {IntersectionObserver | undefined} */
+  let observer;
 
   /**
    * @param {Date | null} date
@@ -57,7 +58,7 @@
    */
   function setFilter(filter) {
     selectedFilter = filter;
-    currentPage = 1; // Reset to page 1 when filter changes
+    visibleCount = data.itemsPerPage;
   }
 
   /**
@@ -78,7 +79,7 @@
    */
   function handleMouseMove(event, card) {
     if (card.classList.contains("flipped")) return;
-    
+
     const rect = card.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
@@ -96,7 +97,7 @@
       duration: 0.25,
       ease: "power1.out",
       overwrite: "auto",
-      immediateRender: false
+      immediateRender: false,
     });
   }
 
@@ -105,46 +106,48 @@
    */
   function handleMouseLeave(card) {
     if (card.classList.contains("flipped")) return;
-    
+
     // Use GSAP for smooth return animation
     gsap.to(card, {
       "--rotate-x": "0deg",
       "--rotate-y": "0deg",
       duration: 0.6,
       ease: "power2.out",
-      overwrite: "auto"
+      overwrite: "auto",
     });
   }
 
-  // Filter and paginate books
+  // Filter books
   let filteredBooks = [];
 
-  // Include selectedFilter as a dependency so the reactive statement re-runs when filter changes
   $: {
-    // Reference selectedFilter to make it a dependency
     selectedFilter;
     filteredBooks = data.allBooks?.filter(matchesFilter) || [];
   }
 
   $: totalBooks = filteredBooks.length;
-  $: totalPages = Math.ceil(totalBooks / data.itemsPerPage);
-  $: books = filteredBooks.slice(
-    (currentPage - 1) * data.itemsPerPage,
-    currentPage * data.itemsPerPage
-  );
+  $: books = filteredBooks.slice(0, visibleCount);
+  $: hasMore = visibleCount < totalBooks;
 
-  /**
-   * @param {number} pageNum
-   */
-  function goToPage(pageNum) {
-    currentPage = pageNum;
-    // Scroll to top of books grid
-    setTimeout(() => {
-      const grid = document.querySelector(".books-grid");
-      if (grid) {
-        grid.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 0);
+  function loadMore() {
+    visibleCount = Math.min(visibleCount + data.itemsPerPage, totalBooks);
+  }
+
+  onMount(() => {
+    observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMore();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+    if (sentinel) observer.observe(sentinel);
+    return () => observer?.disconnect();
+  });
+
+  $: if (sentinel && observer) {
+    observer.observe(sentinel);
   }
 </script>
 
@@ -153,19 +156,18 @@
 </svelte:head>
 
 <section class="container pb-5">
-  <article>
+  <div>
     <h1 class="is-size-1-tablet is-size-3-mobile mb-6 mt-6">Library</h1>
-    
+
     <div class="library-intro mb-6">
       <p class="is-size-4 content">
-        This is a log of books I'm currently reading and have read in the past. 
-        I'm putting it out there for me to keep track as well as for anyone who likes to discover more.
+        This is a log of books I'm currently reading and have read in the past.
+        I'm putting it out there for me to keep track as well as for anyone who
+        likes to discover more.
       </p>
-      <p class="is-size-6 has-text-grey mt-4">
-        Last updated: 11 Jan 2026
-      </p>
+      <p class="is-size-6 has-text-grey mt-4">Last updated: 14 Jul 2026</p>
     </div>
-    
+
     <hr />
 
     {#if data.error}
@@ -202,9 +204,7 @@
 
       <div class="library-stats mb-6">
         <p class="is-size-6 has-text-grey">
-          Showing {(currentPage - 1) * data.itemsPerPage + 1} -
-          {Math.min(currentPage * data.itemsPerPage, totalBooks)}
-          of {totalBooks} books
+          Showing {books.length} of {totalBooks} books
         </p>
       </div>
 
@@ -238,7 +238,7 @@
                                 "Failed to load cover image:",
                                 book.coverImage,
                                 "for book:",
-                                book.Title
+                                book.Title,
                               );
                               target.style.display = "none";
                             }
@@ -328,53 +328,11 @@
           {/each}
         </div>
 
-        {#if totalPages > 1}
-          {@const startPage = Math.max(1, currentPage - 2)}
-          {@const endPage = Math.min(totalPages, startPage + 4)}
-          <nav
-            class="pagination-container mt-6"
-            role="navigation"
-            aria-label="pagination"
-          >
-            <div class="pagination-info mb-4">
-              <p class="is-size-6 has-text-grey">
-                Page {currentPage} of {totalPages}
-              </p>
-            </div>
-
-            <div class="pagination-buttons">
-              <Button
-                onClick={() => goToPage(currentPage - 1)}
-                disabled={currentPage === 1}
-                icon="←"
-              >
-                Previous
-              </Button>
-
-              <div class="page-numbers">
-                {#each Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i) as pageNum}
-                  <button
-                    class="page-button {currentPage === pageNum
-                      ? 'active'
-                      : ''}"
-                    on:click={() => goToPage(pageNum)}
-                    aria-label="Go to page {pageNum}"
-                  >
-                    {pageNum}
-                  </button>
-                {/each}
-              </div>
-
-              <Button
-                onClick={() => goToPage(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                icon="→"
-                iconPosition="right"
-              >
-                Next
-              </Button>
-            </div>
-          </nav>
+        <div bind:this={sentinel} class="scroll-sentinel" aria-hidden="true"></div>
+        {#if hasMore}
+          <div class="loading-indicator">
+            <span class="loading-dots"></span>
+          </div>
         {/if}
       {:else}
         <p class="is-size-4 content has-text-grey">
@@ -384,13 +342,13 @@
     {:else}
       <p class="is-size-4 content">No books found in the library.</p>
     {/if}
-  </article>
+  </div>
 </section>
 
 <style scoped lang="scss">
   .library-intro {
     margin-bottom: 2rem;
-    
+
     p {
       color: rgba(255, 255, 255, 0.8);
       line-height: 1.7;
@@ -460,10 +418,15 @@
 
   .books-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 3rem;
     margin-bottom: 3rem;
     align-items: start;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
 
     @media (max-width: 768px) {
       grid-template-columns: repeat(2, 1fr);
@@ -720,55 +683,51 @@
     overflow: hidden;
   }
 
-  .pagination-container {
+  .scroll-sentinel {
+    height: 1px;
+    margin-top: 2rem;
+  }
+
+  .loading-indicator {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+  }
 
-    .pagination-buttons {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
+  .loading-dots {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    animation: pulse 1.2s ease-in-out infinite;
 
-      .page-numbers {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-
-        .page-button {
-          min-width: 2.5rem;
-          height: 2.5rem;
-          padding: 0.5rem 0.75rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-          color: rgba(255, 255, 255, 0.9);
-          font-size: 0.95rem;
-          cursor: pointer;
-          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-          font-family: inherit;
-
-          &:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-          }
-
-          &.active {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            font-weight: 600;
-          }
-
-          &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-          }
-        }
-      }
+    &::before,
+    &::after {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      animation: pulse 1.2s ease-in-out infinite;
+      position: absolute;
     }
+
+    &::before {
+      transform: translateX(-18px);
+      animation-delay: -0.4s;
+    }
+
+    &::after {
+      transform: translateX(18px);
+      animation-delay: 0.4s;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
   }
 
   @media (max-width: 768px) {
@@ -802,14 +761,5 @@
       font-size: 0.8rem;
     }
 
-    .pagination-buttons {
-      flex-direction: column;
-      width: 100%;
-
-      .page-numbers {
-        width: 100%;
-        justify-content: center;
-      }
-    }
   }
 </style>

@@ -8,7 +8,7 @@
         <hr />
         <p class="is-size-4 content">
             I try producing music sometimes. I don't have any formail training
-            in music, but I enjoy learning about it and playing around with it.
+            in music, but I enjoy learning and experimenting digital music production.
             Here are some of the tracks I've made.
         </p>
         <hr />
