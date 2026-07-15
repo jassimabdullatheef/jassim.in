@@ -10,7 +10,7 @@ marked.use(directives);
 
 // Import all markdown files at build time using Vite's glob import
 // This ensures they're included in the production bundle
-const postModules = import.meta.glob("/src/routes/blog/posts/*.md", {
+const postModules = import.meta.glob("/src/routes/\\(site\\)/blog/posts/*.md", {
   eager: true,
   as: "raw",
 });

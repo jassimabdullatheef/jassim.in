@@ -49,22 +49,45 @@ const IMAGE_TAGS = {
   'Natural Arch.jpg': ['nature'],
 };
 
-const loadImages = async () => {
-  const imageModules = import.meta.glob("./images/*.{jpg,jpeg,png,gif}");
+const ALBUM_LABELS = {
+  'feathers-fur': 'Feathers & Fur',
+  architecture: 'Architecture',
+  nature: 'Nature',
+  misc: 'Misc',
+};
 
-  const imagePromises = Object.entries(imageModules).map(async ([path, moduleLoader]) => {
-    const module = await moduleLoader();
+const imageModules = import.meta.glob(
+  "/src/routes/\\(site\\)/photography/images/*.{jpg,jpeg,png,gif}",
+  { eager: true }
+);
+
+/**
+ * Load photography images grouped by their tag/album.
+ * @returns {{ images: Array<{url: string, tags: string[]}>, albums: Array<{key: string, label: string, cover: string, photos: string[]}> }}
+ */
+export function loadPhotographyData() {
+  const images = Object.entries(imageModules).map(([path, module]) => {
     const url = /** @type {{ default: string }} */ (module).default;
-    const filename = path.split('/').pop();
-    const tags = IMAGE_TAGS[filename] ?? [];
+    const filename = path.split("/").pop() || "";
+    const tags = IMAGE_TAGS[filename] ?? ["misc"];
     return { url, tags };
   });
 
-  return Promise.all(imagePromises);
-};
+  /** @type {Record<string, string[]>} */
+  const grouped = {};
+  for (const img of images) {
+    for (const tag of img.tags) {
+      if (!grouped[tag]) grouped[tag] = [];
+      grouped[tag].push(img.url);
+    }
+  }
 
-export async function load() {
-  return {
-    images: await loadImages(),
-  };
+  const albums = Object.entries(grouped).map(([key, photos]) => ({
+    key,
+    label: ALBUM_LABELS[key] || key,
+    cover: photos[0],
+    photos,
+  }));
+
+  return { images, albums };
 }

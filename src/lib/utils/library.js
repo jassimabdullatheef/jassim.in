@@ -1,8 +1,6 @@
-const ITEMS_PER_PAGE = 30;
-
 // Import CSV file at build time using Vite's glob import
 // This ensures it's included in the production bundle
-const csvModules = import.meta.glob("/src/routes/library/books-db.csv", {
+const csvModules = import.meta.glob("/src/routes/\\(site\\)/library/books-db.csv", {
   eager: true,
   as: "raw",
 });
@@ -204,22 +202,23 @@ function organizeBooksByDate(books, coverMap) {
     });
 }
 
-export async function load({ url }) {
+/**
+ * Load and parse the Goodreads-derived library CSV, matched to local cover images.
+ * @returns {Promise<{ allBooks: any[], error?: string }>}
+ */
+export async function loadLibraryData() {
   try {
-    // Load book covers from $lib/images/book-cover
     const coverMap = await loadBookCovers();
 
-    // Get CSV content from imported module (included at build time)
-    const csvPath = "/src/routes/library/books-db.csv";
+    const csvPath = "/src/routes/(site)/library/books-db.csv";
     const csvModule = csvModules[csvPath];
 
     if (!csvModule) {
       throw new Error(
-        "Could not load books-db.csv. Make sure the file exists at src/routes/library/books-db.csv"
+        "Could not load books-db.csv. Make sure the file exists at src/routes/(site)/library/books-db.csv"
       );
     }
 
-    // Handle both string and Promise<string> (though with eager: true it should be string)
     const csvText =
       typeof csvModule === "string" ? csvModule : String(csvModule);
 
@@ -231,18 +230,10 @@ export async function load({ url }) {
       (/** @type {any} */ book) => !book.isToRead
     );
 
-    // Return all books for client-side filtering
-    return {
-      allBooks: filteredBooks,
-      itemsPerPage: ITEMS_PER_PAGE,
-    };
+    return { allBooks: filteredBooks };
   } catch (error) {
     console.error("Error loading books:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return {
-      allBooks: [],
-      itemsPerPage: ITEMS_PER_PAGE,
-      error: errorMessage,
-    };
+    return { allBooks: [], error: errorMessage };
   }
 }
