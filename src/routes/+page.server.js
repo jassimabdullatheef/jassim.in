@@ -29,6 +29,13 @@ export async function load() {
         ? "★".repeat(b.myRating) + "☆".repeat(5 - b.myRating)
         : "",
       cover: b.coverImage,
+      publisher: b.publisher,
+      binding: b.binding,
+      pages: b.pages,
+      year: b.yearPublished,
+      dateRead: b.dateRead
+        ? new Date(b.dateRead).toISOString().slice(0, 10)
+        : "",
     })),
     albums: albums.map((a) => ({
       key: a.key,

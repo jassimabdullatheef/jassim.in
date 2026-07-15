@@ -1,7 +1,7 @@
 
 let options = {
     root: null,
-    rootMargin: "0px",
+    rootMargin: "400px",
     threshold: 0
 }
 

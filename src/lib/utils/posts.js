@@ -3,10 +3,18 @@ import matter from "gray-matter";
 import { createDirectives } from "marked-directive";
 import { preprocessSidenotes } from "./sidenotes.js";
 import { preprocessPSNotes } from "./psnotes.js";
+import { renderCodeBlock } from "./codeHighlight.js";
 
 const directives = createDirectives();
 
 marked.use(directives);
+marked.use({
+  renderer: {
+    code({ text, lang }) {
+      return renderCodeBlock(text, lang);
+    },
+  },
+});
 
 // Import all markdown files at build time using Vite's glob import
 // This ensures they're included in the production bundle
